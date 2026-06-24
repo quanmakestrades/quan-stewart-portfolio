@@ -9,7 +9,7 @@ function analyticsStore() {
   });
 }
 const allowedTypes = new Set(["pageview", "click", "case_open", "client_error", "resource_error", "vital"]);
-const allowedHosts = new Set(["quan-stewart-portfolio.netlify.app", "localhost", "127.0.0.1"]);
+const allowedHosts = new Set(["quanbuilds.netlify.app", "quan-stewart-portfolio.netlify.app", "localhost", "127.0.0.1"]);
 const maxBodyBytes = 10 * 1024;
 
 function json(statusCode, body) {
