@@ -221,6 +221,16 @@
       const endpoint = "/.netlify/functions/analytics";
       const status = document.querySelector("#status");
 
+      function readToken() {
+        const params = new URLSearchParams(location.search);
+        const token = params.get("token") || localStorage.getItem("portfolioAnalyticsToken") || "";
+        if (params.get("token")) {
+          localStorage.setItem("portfolioAnalyticsToken", params.get("token"));
+          history.replaceState(null, "", location.pathname);
+        }
+        return token;
+      }
+
       function escapeHtml(value) {
         return String(value ?? "").replace(/[&<>"']/g, (char) => ({
           "&": "&amp;",
@@ -251,7 +261,11 @@
 
       async function load() {
         status.textContent = "Loading...";
-        const response = await fetch(endpoint + "?limit=800", { cache: "no-store" });
+        const token = readToken();
+        const response = await fetch(endpoint + "?limit=800", {
+          cache: "no-store",
+          headers: token ? { "x-portfolio-analytics-token": token } : {},
+        });
         const data = await response.json();
         if (!data.ok) throw new Error(data.error || "analytics failed");
 

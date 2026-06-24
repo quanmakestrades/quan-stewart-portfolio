@@ -1,4 +1,5 @@
 import { getStore } from "@netlify/blobs";
+import crypto from "node:crypto";
 
 function analyticsStore() {
   return getStore({
@@ -8,6 +9,8 @@ function analyticsStore() {
   });
 }
 const allowedTypes = new Set(["pageview", "click", "case_open", "client_error", "resource_error", "vital"]);
+const allowedHosts = new Set(["quan-stewart-portfolio.netlify.app", "localhost", "127.0.0.1"]);
+const maxBodyBytes = 10 * 1024;
 
 function json(statusCode, body) {
   return {
@@ -26,11 +29,72 @@ function cleanString(value, max = 240) {
     .slice(0, max);
 }
 
+function getHeader(headers, name) {
+  const lower = name.toLowerCase();
+  return headers[name] || headers[lower] || "";
+}
+
+function hashValue(value) {
+  const salt = process.env.PORTFOLIO_ANALYTICS_SALT || process.env.PORTFOLIO_ANALYTICS_TOKEN || "portfolio-analytics";
+  return crypto.createHash("sha256").update(`${salt}:${value || "unknown"}`).digest("hex").slice(0, 24);
+}
+
+function parseCountry(headers) {
+  const direct = cleanString(getHeader(headers, "x-country") || getHeader(headers, "x-nf-country"), 80);
+  if (direct) return direct;
+  const geo = getHeader(headers, "x-nf-geo");
+  if (!geo) return "";
+  const candidates = [geo];
+  try {
+    candidates.push(Buffer.from(String(geo), "base64").toString("utf8"));
+  } catch {
+    // Keep the raw header candidate only.
+  }
+  for (const candidate of candidates) {
+    try {
+      const parsed = JSON.parse(candidate);
+      return cleanString(parsed.country?.code || parsed.country || "", 80);
+    } catch {
+      const match = String(candidate).match(/country[^A-Za-z0-9]+([A-Z]{2})/i);
+      if (match?.[1]) return cleanString(match[1], 80);
+    }
+  }
+  return "";
+}
+
+function isSameSite(headers) {
+  const origin = getHeader(headers, "origin");
+  if (!origin) return true;
+  try {
+    return allowedHosts.has(new URL(origin).hostname);
+  } catch {
+    return false;
+  }
+}
+
+function readToken(event) {
+  return (
+    getHeader(event.headers || {}, "x-portfolio-analytics-token") ||
+    event.queryStringParameters?.token ||
+    ""
+  );
+}
+
+function hasReadAccess(event) {
+  const expected = process.env.PORTFOLIO_ANALYTICS_TOKEN;
+  return Boolean(expected && readToken(event) === expected);
+}
+
 function cleanEvent(payload, event) {
   const now = new Date();
   const type = allowedTypes.has(payload.type) ? payload.type : "pageview";
   const data = payload.data && typeof payload.data === "object" ? payload.data : {};
   const headers = event.headers || {};
+  const ip =
+    getHeader(headers, "x-nf-client-connection-ip") ||
+    getHeader(headers, "client-ip") ||
+    getHeader(headers, "x-forwarded-for").split(",")[0];
+  const ua = cleanString(getHeader(headers, "user-agent"), 280);
 
   return {
     id: `${now.toISOString()}-${Math.random().toString(36).slice(2, 10)}`,
@@ -50,8 +114,9 @@ function cleanEvent(payload, event) {
       height: Number.isFinite(Number(data.viewport?.height)) ? Number(data.viewport.height) : null,
     },
     connection: cleanString(data.connection, 60),
-    userAgent: cleanString(headers["user-agent"], 280),
-    country: cleanString(headers["x-nf-geo"] || headers["x-country"] || "", 80),
+    userAgent: ua,
+    visitorHash: hashValue(`${ip}|${ua}`),
+    country: parseCountry(headers),
   };
 }
 
@@ -79,15 +144,26 @@ function summarize(events) {
   const byType = {};
   const byPath = {};
   const byDay = {};
+  const byCountry = {};
+  const byReferrer = {};
+  const visitorsByDay = {};
   const errors = [];
   const clicks = [];
+  const suspicious = [];
 
   for (const event of events) {
     byType[event.type] = (byType[event.type] || 0) + 1;
     byPath[event.path] = (byPath[event.path] || 0) + 1;
     byDay[dayKey(event.ts)] = (byDay[dayKey(event.ts)] || 0) + 1;
+    const country = event.country || "unknown";
+    byCountry[country] = (byCountry[country] || 0) + 1;
+    const referrer = event.referrer ? event.referrer.replace(/^https?:\/\/(www\.)?/i, "").split("/")[0] : "direct";
+    byReferrer[referrer] = (byReferrer[referrer] || 0) + 1;
+    visitorsByDay[dayKey(event.ts)] = visitorsByDay[dayKey(event.ts)] || new Set();
+    if (event.visitorHash) visitorsByDay[dayKey(event.ts)].add(event.visitorHash);
     if (event.type.includes("error")) errors.push(event);
     if (event.type === "click" || event.type === "case_open") clicks.push(event);
+    if (/bot|crawl|spider|scanner|curl|python|httpclient|masscan|zgrab/i.test(event.userAgent || "")) suspicious.push(event);
   }
 
   return {
@@ -98,13 +174,41 @@ function summarize(events) {
       .slice(0, 20)
       .map(([path, count]) => ({ path, count })),
     byDay,
+    visitorsByDay: Object.fromEntries(Object.entries(visitorsByDay).map(([day, visitors]) => [day, visitors.size])),
+    byCountry: Object.entries(byCountry).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([country, count]) => ({ country, count })),
+    byReferrer: Object.entries(byReferrer).sort((a, b) => b[1] - a[1]).slice(0, 20).map(([referrer, count]) => ({ referrer, count })),
     recentErrors: errors.slice(0, 25),
     recentClicks: clicks.slice(0, 25),
+    suspicious: suspicious.slice(0, 25),
   };
 }
 
+async function rateLimit(event) {
+  const headers = event.headers || {};
+  const ip =
+    getHeader(headers, "x-nf-client-connection-ip") ||
+    getHeader(headers, "client-ip") ||
+    getHeader(headers, "x-forwarded-for").split(",")[0];
+  const visitor = hashValue(`${ip}|${getHeader(headers, "user-agent")}`);
+  const minute = new Date().toISOString().slice(0, 16);
+  const key = `rate/${minute}/${visitor}.json`;
+  const store = analyticsStore();
+  const current = (await store.get(key, { type: "json" })) || { count: 0 };
+  current.count += 1;
+  await store.setJSON(key, current);
+  return current.count <= 90;
+}
+
 export async function handler(event) {
+  if (event.httpMethod === "OPTIONS") {
+    return json(204, { ok: true });
+  }
+
   if (event.httpMethod === "POST") {
+    if (!isSameSite(event.headers || {})) return json(403, { ok: false, error: "origin_not_allowed" });
+    if (Buffer.byteLength(event.body || "", "utf8") > maxBodyBytes) return json(413, { ok: false, error: "body_too_large" });
+    if (!(await rateLimit(event))) return json(429, { ok: false, error: "rate_limited" });
+
     let payload = {};
     try {
       payload = JSON.parse(event.body || "{}");
@@ -119,6 +223,7 @@ export async function handler(event) {
   }
 
   if (event.httpMethod === "GET") {
+    if (!hasReadAccess(event)) return json(401, { ok: false, error: "analytics_token_required" });
     const limit = Number(event.queryStringParameters?.limit || 500);
     const events = await listEvents(limit);
     return json(200, {
