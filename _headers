@@ -1,0 +1,5 @@
+/internal-analytics-qs/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/.netlify/functions/analytics
+  Cache-Control: no-store
