@@ -19,7 +19,7 @@ window.CASE_STUDIES = [
       "Dashboard/Source Truth Map.md",
       "PortfolioSite/index.html"
     ],
-    images: ["/assets/previews/stewartos.png", "/assets/previews/botler-shell.png", "/assets/previews/contact-sheet.png"],
+    images: [],
     sections: [
       ["What We Built", "A private operating layer that ties together agents, daily reports, project memory, calendars, open loops, and decision context."],
       ["Why It Exists", "The goal was not a polished dashboard first. It was survival-grade usefulness: know what moved, what is blocked, what is safe to automate, and what needs a human decision."],
@@ -46,7 +46,12 @@ window.CASE_STUDIES = [
       ".openclaw/agents/botler/workspace/reports/jim-f10/latest.md",
       "Projects/F10rd-JIM/Status.md"
     ],
-    images: ["/assets/previews/f10rd.png", "/assets/previews/contact-sheet.png", "/assets/previews/more-builds.png"],
+    images: [
+      "/assets/case-studies/f10rd/live-home.png",
+      "/assets/case-studies/f10rd/studio-teaser.png",
+      "/assets/case-studies/f10rd/reel-frame-003s.png",
+      "/assets/case-studies/f10rd/reel-frame-014s.png"
+    ],
     sections: [
       ["What We Built", "A working music-commerce system around F10.0R'D: public site, catalog, shop/order routes, Studio surfaces, content loops, and JIM-backed operating reports."],
       ["Why It Exists", "The north star in the source docs is simple: every gymnast should have music that actually fits them, not a generic free-pack track or a song three other kids are using."],
@@ -74,7 +79,12 @@ window.CASE_STUDIES = [
       "Downloads/taxtrack/test/cpa.test.js",
       "Downloads/taxtrack/test/security.test.js"
     ],
-    images: ["/assets/previews/taxtrakr.png", "/assets/previews/contact-sheet.png", "/assets/previews/stewartos.png"],
+    images: [
+      "/assets/case-studies/taxtrakr/live-home.png",
+      "/assets/case-studies/taxtrakr/live-for-agents.png",
+      "/assets/case-studies/taxtrakr/taxtrakr-ui-01.png",
+      "/assets/case-studies/taxtrakr/poster-01.png"
+    ],
     sections: [
       ["What We Built", "A text-first tax tracking product with site/runtime, lead handling, webhook boundaries, Plaid dependencies, uploads, and CPA packet logic."],
       ["Why It Exists", "Self-employed tax records are usually messy at the point of capture. The product is designed around texting the record in the moment instead of rebuilding it later."],
@@ -102,7 +112,12 @@ window.CASE_STUDIES = [
       ".openclaw/agents/botler/workspace/projects/youcast/FUNNEL_PLAN.md",
       "Projects/YouCast/Status.md"
     ],
-    images: ["/assets/previews/youcast.png", "/assets/previews/contact-sheet.png", "/assets/previews/botler-shell.png"],
+    images: [
+      "/assets/case-studies/youcast/live-home.png",
+      "/assets/case-studies/youcast/hero-product.png",
+      "/assets/case-studies/youcast/link-to-podcast.png",
+      "/assets/case-studies/youcast/device-system.png"
+    ],
     sections: [
       ["What We Built", "A private daily operator brief concept and app package: preference management, calendar/news inputs, generated script, audio, transcript, and Telegram-first delivery."],
       ["Why It Exists", "The core wedge is not public podcast creation. It is a private briefing that tells an operator what moved, what is blocked, and what deserves the first hour."],
@@ -129,7 +144,12 @@ window.CASE_STUDIES = [
       "Projects/TideFlow/Status.md",
       "ProducerOps/Reports/2026-06-04/tideflow/latest.md"
     ],
-    images: ["/assets/previews/tideflow.png", "/assets/previews/contact-sheet.png", "/assets/previews/reddit-finder.png"],
+    images: [
+      "/assets/case-studies/tideflow/live-home.png",
+      "/assets/case-studies/tideflow/war-room-concept.png",
+      "/assets/case-studies/tideflow/dibbs-reference-1.png",
+      "/assets/case-studies/tideflow/dibbs-reference-2.png"
+    ],
     sections: [
       ["What We Built", "A GovCon intelligence app with authenticated product surfaces, AI workflows, Supabase-backed data, and Loki-style assistant framing."],
       ["Why It Exists", "Small businesses need help finding relevant opportunities, understanding fit, and moving through contracting work without losing context."],
@@ -156,7 +176,12 @@ window.CASE_STUDIES = [
       ".openclaw/agents/botler/workspace/reports/impulse/latest.md",
       "StewartOS/Impulse/research/dashboard/SPEC.md"
     ],
-    images: ["/assets/previews/impulse.png", "/assets/previews/contact-sheet.png", "/assets/previews/stewartos.png"],
+    images: [
+      "/assets/case-studies/impulse/demo-02s.jpg",
+      "/assets/case-studies/impulse/demo-09s.jpg",
+      "/assets/case-studies/impulse/demo-16s.jpg",
+      "/assets/case-studies/impulse/demo-23s.jpg"
+    ],
     sections: [
       ["What We Built", "A local trading review environment with state snapshots, portfolio routes, journal routes, order/position checks, and daily reports."],
       ["Why It Exists", "Trading systems are dangerous when they sound certain without receipts. Impulse is intentionally built to say no when proof is missing."],
@@ -183,7 +208,7 @@ window.CASE_STUDIES = [
       "Downloads/deadstroke/deadstroke-native/README.md",
       "Memory: DeadStroke native AR regression testing"
     ],
-    images: ["/assets/previews/deadstroke.png", "/assets/previews/contact-sheet.png", "/assets/previews/more-builds.png"],
+    images: [],
     sections: [
       ["What We Built", "A sports-coaching product with camera setup guidance, pose analysis, AI coaching functions, sessions, shots, badges, and native AR work."],
       ["Why It Exists", "Pool players need immediate form feedback without stopping to review video manually or wearing special sensors."],
@@ -209,7 +234,12 @@ window.CASE_STUDIES = [
       ".openclaw/agents/botler/workspace/projects/Reddit-Finder-PRD.md",
       "PortfolioSite/index.html"
     ],
-    images: ["/assets/previews/reddit-finder.png", "/assets/previews/contact-sheet.png", "/assets/previews/tideflow.png"],
+    images: [
+      "/assets/case-studies/reddit-finder/saas-evidence.png",
+      "/assets/case-studies/reddit-finder/entrepreneur-evidence.png",
+      "/assets/case-studies/reddit-finder/productivity-evidence.png",
+      "/assets/case-studies/reddit-finder/webdev-evidence.png"
+    ],
     sections: [
       ["What We Built", "A concept and product surface for turning public community complaints into structured product opportunities."],
       ["Why It Exists", "The goal is to reduce fake demand by grounding the idea queue in observable public pain."],
@@ -236,7 +266,7 @@ window.CASE_STUDIES = [
       ".openclaw/agents/botler/workspace/botler/",
       "PortfolioSite/index.html"
     ],
-    images: ["/assets/previews/botler-shell.png", "/assets/previews/stewartos.png", "/assets/previews/family-os.png"],
+    images: [],
     sections: [
       ["What We Built", "A visual and operational layer for watching agent work, household rhythm, projects, finance, and recovery status."],
       ["Why It Exists", "Agent systems need a face that makes them accountable to the human operator, not just logs buried in folders."],
@@ -263,7 +293,12 @@ window.CASE_STUDIES = [
       "Projects/National Website Prospects/call-board-state.json",
       ".openclaw/agents/botler/workspace/work/local-no-website-leads-2026-06-07/perfect-nails-site-prd.md"
     ],
-    images: ["/assets/previews/local-sites.png", "/assets/previews/contact-sheet.png", "/assets/previews/more-builds.png"],
+    images: [
+      "/assets/case-studies/local-sites/go2-desktop-frame.jpg",
+      "/assets/case-studies/local-sites/go2-mobile-frame.jpg",
+      "/assets/case-studies/local-sites/go2-desktop-teaser.jpg",
+      "/assets/case-studies/local-sites/go2-mobile-teaser.jpg"
+    ],
     sections: [
       ["What We Built", "A local-business site-build lane with prospect tracking, offer concepts, calls, and follow-up structure."],
       ["Why It Exists", "Small businesses often need a simple useful site before they need a large digital strategy."],
@@ -290,7 +325,12 @@ window.CASE_STUDIES = [
       "Family/Homeschool/School Board.md",
       "Calendar/README.md"
     ],
-    images: ["/assets/previews/family-os.png", "/assets/previews/botler-shell.png", "/assets/previews/contact-sheet.png"],
+    images: [
+      "/assets/case-studies/family-os/calendar-home.png",
+      "/assets/case-studies/family-os/calendar-ops.png",
+      "/assets/case-studies/family-os/kids-botler.png",
+      "/assets/case-studies/family-os/header-vibe.png"
+    ],
     sections: [
       ["What We Built", "A home and homeschool operating layer with lessons, boards, schedules, activity planning, and daily family context."],
       ["Why It Exists", "The goal is calm execution: fewer scattered notes, fewer missed preparations, and a visible rhythm for the household."],
@@ -318,7 +358,12 @@ window.CASE_STUDIES = [
       ".openclaw/agents/dev/workspace/secret-flipper/PRD.md",
       "PortfolioSite/index.html"
     ],
-    images: ["/assets/previews/more-builds.png", "/assets/previews/contact-sheet.png", "/assets/previews/reddit-finder.png"],
+    images: [
+      "/assets/case-studies/product-lab/brick-concept-montage.png",
+      "/assets/case-studies/product-lab/memory-brick-gifts.png",
+      "/assets/case-studies/product-lab/youcast-episode-art.png",
+      "/assets/case-studies/product-lab/reddit-selfhosted-evidence.png"
+    ],
     sections: [
       ["What We Built", "A broader product laboratory around small market tests, product briefs, build queues, content dashboards, and internal launch tooling."],
       ["Why It Exists", "The lab keeps creative throughput high without pretending every idea is already a company."],

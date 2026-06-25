@@ -16,6 +16,16 @@
     Cache-Control = "no-store"
 
 [[redirects]]
+  from = "/work"
+  to = "/#work"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 301
+
+[[redirects]]
   from = "/case-studies/:slug/"
   to = "/case-studies/index.html"
   status = 200
