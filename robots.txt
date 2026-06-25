@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /internal-analytics-qs/
 
-Sitemap: https://quan-stewart-portfolio.netlify.app/sitemap.xml
+Sitemap: https://quanbuilds.netlify.app/sitemap.xml
