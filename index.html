@@ -40,6 +40,8 @@
         --switch-fg: #f7f5ef;
         --glass-bg: rgba(247, 245, 239, 0.56);
         --glass-edge: rgba(8, 8, 8, 0.16);
+        --gold: #a77a24;
+        --gold-soft: rgba(167, 122, 36, 0.18);
         --max: 1120px;
         --pad: clamp(18px, 4vw, 54px);
       }
@@ -58,6 +60,8 @@
         --switch-fg: #070707;
         --glass-bg: rgba(7, 7, 7, 0.58);
         --glass-edge: rgba(247, 245, 239, 0.18);
+        --gold: #d2a545;
+        --gold-soft: rgba(210, 165, 69, 0.22);
       }
 
       * {
@@ -241,6 +245,7 @@
         border: 1px solid var(--glass-edge);
         border-radius: 999px;
         background:
+          linear-gradient(90deg, transparent 0 3%, var(--gold-soft) 18%, transparent 34% 66%, var(--gold-soft) 82%, transparent 97%),
           radial-gradient(circle at var(--rail-x, 50%) var(--rail-y, 50%), rgba(255, 255, 255, 0.34), transparent 28%),
           linear-gradient(115deg, rgba(255, 255, 255, 0.22), transparent 32%),
           var(--glass-bg);
@@ -291,17 +296,43 @@
         background: transparent;
         color: var(--fg);
         cursor: pointer;
-        transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+        position: relative;
+        transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+      }
+
+      .project-rail-item::after {
+        content: "";
+        position: absolute;
+        left: 47px;
+        right: 13px;
+        bottom: 7px;
+        height: 1px;
+        background: var(--gold);
+        opacity: 0;
+        transform: scaleX(0.45);
+        transform-origin: left center;
+        transition: opacity 180ms ease, transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .project-rail-item:hover,
       .project-rail-item.is-active {
-        border-color: var(--glass-edge);
-        background: color-mix(in srgb, var(--bg) 62%, transparent);
+        border-color: color-mix(in srgb, var(--gold) 48%, var(--glass-edge));
+        background: color-mix(in srgb, var(--bg) 58%, var(--gold-soft));
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 22%, transparent);
       }
 
       .project-rail-item:hover {
         transform: translateY(-1px);
+      }
+
+      .project-rail-item:hover::after,
+      .project-rail-item.is-active::after {
+        opacity: 0.8;
+        transform: scaleX(1);
+      }
+
+      .project-rail-item.is-active .project-rail-label {
+        color: var(--gold);
       }
 
       .project-rail-thumb {
@@ -310,6 +341,7 @@
         border-radius: 999px;
         overflow: hidden;
         background: var(--panel);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 18%, transparent);
       }
 
       .project-rail-thumb img {
@@ -319,6 +351,13 @@
         object-fit: cover;
         filter: var(--image-filter);
         opacity: 0.78;
+        transition: opacity 180ms ease, filter 180ms ease;
+      }
+
+      .project-rail-item:hover .project-rail-thumb img,
+      .project-rail-item.is-active .project-rail-thumb img {
+        opacity: 0.92;
+        filter: grayscale(0.7) contrast(1.08) sepia(0.18);
       }
 
       .project-rail-label {
@@ -1418,6 +1457,20 @@
       let renderedTop = 0;
       let renderedOpacity = 0.09;
       let activeProjectId = "";
+      const projectRailLabels = [
+        "Agent Ops",
+        "Music Sales",
+        "Tax Texts",
+        "Audio Briefs",
+        "Field Ops",
+        "Trade Review",
+        "AR Training",
+        "Lead Mining",
+        "Home Ops",
+        "Site Builds",
+        "Learning",
+        "Product Lab",
+      ];
 
       function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -1482,6 +1535,7 @@
       function setupProjectRail() {
         workCards.forEach((card, index) => {
           const title = card.querySelector("h3")?.textContent.trim() || `Project ${index + 1}`;
+          const label = projectRailLabels[index] || card.querySelector(".work-meta span:last-child")?.textContent.trim() || title;
           const image = card.querySelector(".work-shot img");
           const id = `work-project-${index + 1}`;
           card.id = card.id || id;
@@ -1490,13 +1544,14 @@
           button.className = "project-rail-item";
           button.type = "button";
           button.dataset.target = card.id;
-          button.setAttribute("aria-label", `Jump to ${title}`);
+          button.dataset.title = title;
+          button.setAttribute("aria-label", `Jump to ${title}: ${label}`);
           button.innerHTML = `
             <span class="project-rail-thumb" aria-hidden="true"><img src="${image?.getAttribute("src") || ""}" alt="" loading="lazy" /></span>
-            <span class="project-rail-label">${title}</span>
+            <span class="project-rail-label">${label}</span>
           `;
           button.addEventListener("click", () => {
-            track("click", { label: `Project rail: ${title}`, target: `#${card.id}` });
+            track("click", { label: `Project rail: ${label} / ${title}`, target: `#${card.id}` });
             const offset = projectRail.offsetHeight + 92;
             const top = window.scrollY + card.getBoundingClientRect().top - offset;
             window.scrollTo({ top, behavior: "smooth" });
