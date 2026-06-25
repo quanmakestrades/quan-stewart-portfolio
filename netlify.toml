@@ -14,3 +14,13 @@
   for = "/.netlify/functions/analytics"
   [headers.values]
     Cache-Control = "no-store"
+
+[[redirects]]
+  from = "/case-studies/:slug/"
+  to = "/case-studies/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/case-studies/:slug"
+  to = "/case-studies/index.html"
+  status = 200
