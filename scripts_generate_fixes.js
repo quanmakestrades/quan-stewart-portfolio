@@ -106,6 +106,7 @@ function agenticosTower() {
 }
 function agentIcon(name) {
   const icons = {
+    Botler: '<path d="M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 18l-2.1-5.3L4 10.6l5.9-2.1L12 3Z"/><path d="M19 4v4M21 6h-4"/>',
     Cash: '<path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/>',
     Dev: '<path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/>',
     Jim: '<circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/>',
@@ -128,6 +129,116 @@ function controlIcon(name) {
     Approval: '<circle cx="12" cy="12" r="8"/><path d="m8.5 12.5 2.2 2.2 4.8-5.4"/>',
   };
   return `<svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
+}
+const agentProfiles = [
+  {
+    name: "Botler",
+    role: "Control plane",
+    model: "Primary documented model: openai-codex/gpt-5.4 for Tier 0 direct sessions.",
+    does: "Receives the human request, decides whether the work should stay in the main session or route to a specialist, keeps approval gates visible, and turns scattered work into durable reports.",
+    how: "Botler works from the shared memory, run ledger, operating-mode contracts, and project artifacts. It does not treat chat as the source of truth when a file, receipt, route, or deploy can be checked.",
+    goal: "Become the dependable front desk for the whole system: one command surface, clear routing, honest fallback disclosure, and no silent downgrade on household-critical or business-critical work."
+  },
+  {
+    name: "Cash",
+    role: "Revenue and finance truth",
+    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    does: "Keeps the money story honest: revenue movement, receivables, outreach proof, P&L gaps, and whether a project actually moved closer to cash.",
+    how: "Cash compares claims against ledgers, invoices, outreach trackers, payment receipts, broker/account receipts, and daily KPI artifacts before it lets a number become operator truth.",
+    goal: "Reach decision-grade financial reporting: clean daily cash position, booked revenue, overdue proofs, and automatic escalation when the source chain is missing."
+  },
+  {
+    name: "Dev",
+    role: "Engineering repair and build execution",
+    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    does: "Handles implementation, source inspection, deploy repair, runtime debugging, and the narrow code changes needed to unblock products.",
+    how: "Dev works against the real repo, the live route, the scheduler state, and the generated artifacts. It pairs with Red and Doc so fixes are checked and recorded instead of merely attempted.",
+    goal: "Become a reliable build lane that can take a scoped issue from diagnosis to verified deploy with receipts, while leaving unrelated work untouched."
+  },
+  {
+    name: "Jim",
+    role: "F10.0RD growth and storefront operator",
+    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    does: "Runs the music/storefront lane: content drafts, outbound opportunities, site health checks, catalog status, and approval-gated revenue actions.",
+    how: "Jim reads F10.0RD artifacts, content dashboards, draft packets, storefront checks, CRM/inbox trackers, and approval state before recommending a send, post, listing, or follow-up.",
+    goal: "Turn F10.0RD into a measurable operating loop where content, outreach, storefront health, orders, and revenue all reconcile cleanly."
+  },
+  {
+    name: "Hermes",
+    role: "Runtime and transport layer",
+    model: "Documented as eligible for faster models; not allowed to make Tier 0 policy decisions.",
+    does: "Carries runtime/orchestration context, agent communication, task handoffs, and switchboard-style execution without muddying Botler's family/business context.",
+    how: "Hermes owns operational heavy lifting: route messages, run bounded tasks, move state between agents, and raise `needs_decision` when the work requires Botler or Quan.",
+    goal: "Become the clean transport layer for multi-agent work: reliable handoffs, clear job ownership, and no context bleed between specialists."
+  },
+  {
+    name: "Loki",
+    role: "Cleanup, QA routing, and opportunity hygiene",
+    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    does: "Owns cleanup, optimization, mode switching, TideFlow prospect hygiene, and recurring QA/opportunity movement loops.",
+    how: "Loki reads trackers, stale dates, contact coverage, scheduler health, product QA reports, and operating-mode state to keep the machine and project lanes from drifting.",
+    goal: "Become the system's reliability and momentum layer: cleaner workspaces, healthier queues, sharper prospects, and mode-aware automation."
+  },
+  {
+    name: "Impulse",
+    role: "Trading discipline and market exposure",
+    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    does: "Monitors trading posture, open orders, positions, broker/source truth, paper signals, and whether live risk is allowed or should fail closed.",
+    how: "Impulse refuses to book P&L or trade state without a durable receipt chain: balances, positions, orders, fills, fees, market data, and quote validation.",
+    goal: "Become a disciplined trading assistant with certified receipts, decision-grade exposure checks, and risk controls that fail closed when truth is incomplete."
+  },
+  {
+    name: "Red",
+    role: "Product QA and adversarial review",
+    model: "Recent ledger models: GPT-5.4 / GPT-5 Codex.",
+    does: "Finds broken flows, stale data, routing problems, misleading UI states, and product regressions before users run into them.",
+    how: "Red combines static checks, local builds, smoke tests, route probes, and browser QA when tooling/session access exists. It records blockers instead of pretending a full pass happened.",
+    goal: "Become the automatic quality gate for every public product: authenticated smoke tests, route checks, console review, stale-data detection, and deploy drift alerts."
+  },
+  {
+    name: "Doc",
+    role: "Receipts, repairs, and artifact truth",
+    model: "Recent ledger models: gpt-5.5 and gpt-5.5/openai-codex.",
+    does: "Repairs receipt chains, corrects stale scheduler/watchdog artifacts, writes clear status truth, and keeps operational records aligned with live state.",
+    how: "Doc cross-checks run logs, jobs-state, repair tickets, ledgers, and report files, then patches the durable record without triggering public sends or risky external actions.",
+    goal: "Become the audit layer for AgenticOS: every important run should leave a clean, current, verifiable trail."
+  },
+  {
+    name: "Atlas",
+    role: "Financial planning and strategy",
+    model: "Configured model: anthropic/claude-sonnet-4-5.",
+    does: "Supports higher-level financial planning, portfolio strategy, debt elimination, wealth-building work, and supervision of research lanes.",
+    how: "Atlas works from shared context, Scout research, financial recovery plans, and strategy notes, then turns market and household constraints into practical decisions.",
+    goal: "Become a trustworthy strategic advisor with strong tool discipline, clear fallback disclosure, and durable plans that Cash can later verify against real numbers."
+  },
+  {
+    name: "Scout",
+    role: "Research and opportunity discovery",
+    model: "Configured model: google/gemini-2.5-flash.",
+    does: "Scans markets, pain points, product opportunities, trends, and expansion signals so Atlas, Botler, and product agents can make better calls.",
+    how: "Scout is optimized for fast research passes and usable summaries, with factual accuracy and cited source trails prioritized over novelty.",
+    goal: "Become the first-pass research radar for new product wedges, market shifts, competitor signals, and customer pain worth turning into action."
+  }
+];
+function agentSlug(name) {
+  return String(name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+function agentProfileSections() {
+  return agentProfiles.map((agent) => `<article class="agent-section" id="agent-${agentSlug(agent.name)}" data-section="${attr(agent.name)}">
+          <div class="agent-section-head">
+            ${agentIcon(agent.name)}
+            <div>
+              <p class="eyebrow">${esc(agent.role)}</p>
+              <h3>${esc(agent.name)}</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>${esc(agent.does)}</p>
+            <p><strong>How they work</strong>${esc(agent.how)}</p>
+            <p><strong>Model</strong>${esc(agent.model)}</p>
+            <p><strong>Long-term goal</strong>${esc(agent.goal)}</p>
+          </div>
+        </article>`).join("\n");
 }
 function agenticosVisuals(item) {
   return `<article class="proof-card proof-memory">
@@ -256,7 +367,7 @@ ${headFor(item)}
         text-transform: uppercase;
         letter-spacing: 0.14em;
       }
-      .brand {
+      .mark {
         color: var(--gold) !important;
         font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
         font-size: 31px !important;
@@ -264,10 +375,10 @@ ${headFor(item)}
         letter-spacing: -0.03em !important;
         text-transform: uppercase;
       }
-      .nav-links {
+      .nav-actions {
         display: flex;
         align-items: center;
-        gap: clamp(24px, 5vw, 64px);
+        gap: clamp(18px, 3vw, 36px);
       }
       .topbar a:hover { color: var(--gold); }
       .theme-toggle {
@@ -618,7 +729,7 @@ ${headFor(item)}
         font-size: clamp(28px, 3vw, 40px);
         text-transform: none;
       }
-      .roster-strip span {
+      .roster-strip a {
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -630,6 +741,13 @@ ${headFor(item)}
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.12em;
+        transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      }
+      .roster-strip a:hover {
+        color: var(--fg);
+        border-color: var(--gold);
+        background: var(--gold-soft);
+        transform: translateY(-2px);
       }
       .agent-icon {
         width: 30px;
@@ -650,6 +768,63 @@ ${headFor(item)}
         font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
         font-size: clamp(20px, 2vw, 25px);
         font-weight: 500;
+      }
+      .agent-deep-dive {
+        display: grid;
+        gap: 14px;
+        padding: 22px 0;
+      }
+      .agent-deep-dive > .eyebrow {
+        color: var(--gold);
+      }
+      .agent-section {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
+        gap: clamp(22px, 4vw, 58px);
+        padding: clamp(22px, 4vw, 42px);
+        border: 1px solid rgba(200, 154, 58, 0.5);
+        border-radius: 12px;
+        background: rgba(247, 241, 223, 0.052);
+        backdrop-filter: blur(22px) saturate(1.2);
+        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+        scroll-margin-top: 92px;
+      }
+      .agent-section:hover {
+        border-color: rgba(200, 154, 58, 0.88);
+      }
+      .agent-section-head {
+        display: flex;
+        align-items: start;
+        gap: 16px;
+      }
+      .agent-section-head .agent-icon {
+        width: 44px;
+        height: 44px;
+        padding: 9px;
+      }
+      .agent-section h3 {
+        font-size: clamp(30px, 3vw, 45px);
+        line-height: 0.95;
+        text-transform: none;
+        letter-spacing: -0.01em;
+      }
+      .agent-section-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .agent-section-grid p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .agent-section-grid strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--fg);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
       }
       .editor-mock, .proof-ledger table, .approval-card {
         width: 100%;
@@ -822,7 +997,7 @@ ${headFor(item)}
         .content {
           padding-left: var(--pad);
         }
-        .hero, .case-meta, .story-panel, .fact-grid, .comment-form, .artifact-grid {
+        .hero, .case-meta, .story-panel, .fact-grid, .comment-form, .artifact-grid, .agent-section, .agent-section-grid {
           grid-template-columns: 1fr;
         }
         .meta-row {
@@ -860,14 +1035,11 @@ ${headFor(item)}
   </head>
   <body>
     <header class="topbar" aria-label="Site header">
-      <a class="brand" href="/" aria-label="QuanBuilds home">AO</a>
-      <nav class="nav-links" aria-label="Case study navigation">
-        <a href="/#work">Work</a>
-        <a href="/#story">About</a>
-        <a href="#proof">Notes</a>
-        <a href="/#contact">Contact</a>
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="Toggle theme"></button>
+      <a class="mark" href="/" aria-label="QuanBuilds home">QS</a>
+      <div class="nav-actions">
+        <a class="back" href="/#work">All Work</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme"></button>
+      </div>
     </header>
     <div class="case-shell">
       <aside class="tower-wrap" aria-hidden="true">
@@ -916,11 +1088,15 @@ ${headFor(item)}
         </nav>
         <section class="story" aria-label="AgenticOS roster">
           <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
-            ${["Cash","Dev","Jim","Hermes","Loki","Impulse","Red","Doc","Atlas","Scout"].map(name => `<span>${agentIcon(name)}${name}</span>`).join("")}
+            ${agentProfiles.map(agent => `<a href="#agent-${agentSlug(agent.name)}">${agentIcon(agent.name)}${agent.name}</a>`).join("")}
           </aside>
         </section>
         <section class="artifact-grid" id="section-3" data-section="Proof Trail" aria-label="AgenticOS source artifacts">
           ${agenticosVisuals(item)}
+        </section>
+        <section class="agent-deep-dive" id="section-agents" data-section="Agent Details" aria-label="Agent details">
+          <p class="eyebrow">Agent Details</p>
+          ${agentProfileSections()}
         </section>
         <section class="facts" id="section-4" data-section="Notes" aria-label="Evidence and unknowns">
           <div class="fact-grid">
@@ -928,7 +1104,6 @@ ${headFor(item)}
             <article class="fact-card"><p class="meta-label">Approach</p><h3>How we tried</h3><p>${esc(item.approach)}</p></article>
             <article class="fact-card"><p class="meta-label">Outcome</p><h3>Did it work?</h3><p>${esc(item.outcome)}</p></article>
             <article class="fact-card"><p class="meta-label">Still Unknown</p><h3>Needs owner truth</h3><ul class="source-list">${liList(item.unknowns)}</ul></article>
-            <article class="fact-card"><p class="meta-label">Sources</p><h3>What this page used</h3><ul class="source-list">${liList(item.sources)}</ul></article>
             <article class="fact-card"><p class="meta-label">Next</p><h3>Reusable pattern</h3><p>This case study is about the operating pattern: scoped agents, durable memory, approval gates, and evidence trails that other teams can adapt.</p></article>
           </div>
         </section>
@@ -1055,7 +1230,7 @@ ${headFor(item)}
           }
         });
       }, { rootMargin: "-35% 0px -45% 0px", threshold: 0.01 });
-      document.querySelectorAll(".story-panel, .roster-strip, .artifact-grid, .facts").forEach((panel) => observer.observe(panel));
+      document.querySelectorAll(".story-panel, .roster-strip, .artifact-grid, .agent-deep-dive, .facts").forEach((panel) => observer.observe(panel));
       const depthMarks = [25, 50, 75, 95];
       const sentDepth = new Set();
       function onScroll() {

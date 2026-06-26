@@ -88,7 +88,7 @@
         text-transform: uppercase;
         letter-spacing: 0.14em;
       }
-      .brand {
+      .mark {
         color: var(--gold) !important;
         font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
         font-size: 31px !important;
@@ -96,10 +96,10 @@
         letter-spacing: -0.03em !important;
         text-transform: uppercase;
       }
-      .nav-links {
+      .nav-actions {
         display: flex;
         align-items: center;
-        gap: clamp(24px, 5vw, 64px);
+        gap: clamp(18px, 3vw, 36px);
       }
       .topbar a:hover { color: var(--gold); }
       .theme-toggle {
@@ -450,7 +450,7 @@
         font-size: clamp(28px, 3vw, 40px);
         text-transform: none;
       }
-      .roster-strip span {
+      .roster-strip a {
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -462,6 +462,13 @@
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.12em;
+        transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+      }
+      .roster-strip a:hover {
+        color: var(--fg);
+        border-color: var(--gold);
+        background: var(--gold-soft);
+        transform: translateY(-2px);
       }
       .agent-icon {
         width: 30px;
@@ -482,6 +489,63 @@
         font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
         font-size: clamp(20px, 2vw, 25px);
         font-weight: 500;
+      }
+      .agent-deep-dive {
+        display: grid;
+        gap: 14px;
+        padding: 22px 0;
+      }
+      .agent-deep-dive > .eyebrow {
+        color: var(--gold);
+      }
+      .agent-section {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
+        gap: clamp(22px, 4vw, 58px);
+        padding: clamp(22px, 4vw, 42px);
+        border: 1px solid rgba(200, 154, 58, 0.5);
+        border-radius: 12px;
+        background: rgba(247, 241, 223, 0.052);
+        backdrop-filter: blur(22px) saturate(1.2);
+        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+        scroll-margin-top: 92px;
+      }
+      .agent-section:hover {
+        border-color: rgba(200, 154, 58, 0.88);
+      }
+      .agent-section-head {
+        display: flex;
+        align-items: start;
+        gap: 16px;
+      }
+      .agent-section-head .agent-icon {
+        width: 44px;
+        height: 44px;
+        padding: 9px;
+      }
+      .agent-section h3 {
+        font-size: clamp(30px, 3vw, 45px);
+        line-height: 0.95;
+        text-transform: none;
+        letter-spacing: -0.01em;
+      }
+      .agent-section-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .agent-section-grid p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .agent-section-grid strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--fg);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
       }
       .editor-mock, .proof-ledger table, .approval-card {
         width: 100%;
@@ -654,7 +718,7 @@
         .content {
           padding-left: var(--pad);
         }
-        .hero, .case-meta, .story-panel, .fact-grid, .comment-form, .artifact-grid {
+        .hero, .case-meta, .story-panel, .fact-grid, .comment-form, .artifact-grid, .agent-section, .agent-section-grid {
           grid-template-columns: 1fr;
         }
         .meta-row {
@@ -692,14 +756,11 @@
   </head>
   <body>
     <header class="topbar" aria-label="Site header">
-      <a class="brand" href="/" aria-label="QuanBuilds home">AO</a>
-      <nav class="nav-links" aria-label="Case study navigation">
-        <a href="/#work">Work</a>
-        <a href="/#story">About</a>
-        <a href="#proof">Notes</a>
-        <a href="/#contact">Contact</a>
-      </nav>
-      <button class="theme-toggle" type="button" aria-label="Toggle theme"></button>
+      <a class="mark" href="/" aria-label="QuanBuilds home">QS</a>
+      <div class="nav-actions">
+        <a class="back" href="/#work">All Work</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme"></button>
+      </div>
     </header>
     <div class="case-shell">
       <aside class="tower-wrap" aria-hidden="true">
@@ -767,7 +828,7 @@
         </nav>
         <section class="story" aria-label="AgenticOS roster">
           <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
-            <span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/></svg>Cash</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg>Dev</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/></svg>Jim</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15c7-1 11-4.5 16-11-1.2 6.8-4.8 12-13 15"/><path d="M8 16c2.5-3.4 5.9-5.8 10-7"/></svg>Hermes</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8c-2-3-1-5 1-6 0 3 2 5 4 6 2-1 4-3 4-6 2 1 3 3 1 6"/><path d="M6 9c0 5 2.5 9 6 9s6-4 6-9"/><path d="M9 20h6"/></svg>Loki</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6l1-8Z"/></svg>Impulse</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.3 7 10 4.1-1.7 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Red</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>Doc</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/></svg>Atlas</span><span><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 8-4 10-4-4-4 2 4-10 4 4 4-2Z"/><path d="m12 10-2 4"/></svg>Scout</span>
+            <a href="#agent-botler"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 18l-2.1-5.3L4 10.6l5.9-2.1L12 3Z"/><path d="M19 4v4M21 6h-4"/></svg>Botler</a><a href="#agent-cash"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/></svg>Cash</a><a href="#agent-dev"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg>Dev</a><a href="#agent-jim"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/></svg>Jim</a><a href="#agent-hermes"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15c7-1 11-4.5 16-11-1.2 6.8-4.8 12-13 15"/><path d="M8 16c2.5-3.4 5.9-5.8 10-7"/></svg>Hermes</a><a href="#agent-loki"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8c-2-3-1-5 1-6 0 3 2 5 4 6 2-1 4-3 4-6 2 1 3 3 1 6"/><path d="M6 9c0 5 2.5 9 6 9s6-4 6-9"/><path d="M9 20h6"/></svg>Loki</a><a href="#agent-impulse"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6l1-8Z"/></svg>Impulse</a><a href="#agent-red"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.3 7 10 4.1-1.7 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Red</a><a href="#agent-doc"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>Doc</a><a href="#agent-atlas"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/></svg>Atlas</a><a href="#agent-scout"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 8-4 10-4-4-4 2 4-10 4 4 4-2Z"/><path d="m12 10-2 4"/></svg>Scout</a>
           </aside>
         </section>
         <section class="artifact-grid" id="section-3" data-section="Proof Trail" aria-label="AgenticOS source artifacts">
@@ -806,6 +867,174 @@ This project focuses on building a multi-agent operating system that coordinates
           </div>
         </article>
         </section>
+        <section class="agent-deep-dive" id="section-agents" data-section="Agent Details" aria-label="Agent details">
+          <p class="eyebrow">Agent Details</p>
+          <article class="agent-section" id="agent-botler" data-section="Botler">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 18l-2.1-5.3L4 10.6l5.9-2.1L12 3Z"/><path d="M19 4v4M21 6h-4"/></svg>
+            <div>
+              <p class="eyebrow">Control plane</p>
+              <h3>Botler</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Receives the human request, decides whether the work should stay in the main session or route to a specialist, keeps approval gates visible, and turns scattered work into durable reports.</p>
+            <p><strong>How they work</strong>Botler works from the shared memory, run ledger, operating-mode contracts, and project artifacts. It does not treat chat as the source of truth when a file, receipt, route, or deploy can be checked.</p>
+            <p><strong>Model</strong>Primary documented model: openai-codex/gpt-5.4 for Tier 0 direct sessions.</p>
+            <p><strong>Long-term goal</strong>Become the dependable front desk for the whole system: one command surface, clear routing, honest fallback disclosure, and no silent downgrade on household-critical or business-critical work.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-cash" data-section="Cash">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/></svg>
+            <div>
+              <p class="eyebrow">Revenue and finance truth</p>
+              <h3>Cash</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Keeps the money story honest: revenue movement, receivables, outreach proof, P&amp;L gaps, and whether a project actually moved closer to cash.</p>
+            <p><strong>How they work</strong>Cash compares claims against ledgers, invoices, outreach trackers, payment receipts, broker/account receipts, and daily KPI artifacts before it lets a number become operator truth.</p>
+            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Long-term goal</strong>Reach decision-grade financial reporting: clean daily cash position, booked revenue, overdue proofs, and automatic escalation when the source chain is missing.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-dev" data-section="Dev">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg>
+            <div>
+              <p class="eyebrow">Engineering repair and build execution</p>
+              <h3>Dev</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Handles implementation, source inspection, deploy repair, runtime debugging, and the narrow code changes needed to unblock products.</p>
+            <p><strong>How they work</strong>Dev works against the real repo, the live route, the scheduler state, and the generated artifacts. It pairs with Red and Doc so fixes are checked and recorded instead of merely attempted.</p>
+            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Long-term goal</strong>Become a reliable build lane that can take a scoped issue from diagnosis to verified deploy with receipts, while leaving unrelated work untouched.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-jim" data-section="Jim">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/></svg>
+            <div>
+              <p class="eyebrow">F10.0RD growth and storefront operator</p>
+              <h3>Jim</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Runs the music/storefront lane: content drafts, outbound opportunities, site health checks, catalog status, and approval-gated revenue actions.</p>
+            <p><strong>How they work</strong>Jim reads F10.0RD artifacts, content dashboards, draft packets, storefront checks, CRM/inbox trackers, and approval state before recommending a send, post, listing, or follow-up.</p>
+            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Long-term goal</strong>Turn F10.0RD into a measurable operating loop where content, outreach, storefront health, orders, and revenue all reconcile cleanly.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-hermes" data-section="Hermes">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15c7-1 11-4.5 16-11-1.2 6.8-4.8 12-13 15"/><path d="M8 16c2.5-3.4 5.9-5.8 10-7"/></svg>
+            <div>
+              <p class="eyebrow">Runtime and transport layer</p>
+              <h3>Hermes</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Carries runtime/orchestration context, agent communication, task handoffs, and switchboard-style execution without muddying Botler&#39;s family/business context.</p>
+            <p><strong>How they work</strong>Hermes owns operational heavy lifting: route messages, run bounded tasks, move state between agents, and raise `needs_decision` when the work requires Botler or Quan.</p>
+            <p><strong>Model</strong>Documented as eligible for faster models; not allowed to make Tier 0 policy decisions.</p>
+            <p><strong>Long-term goal</strong>Become the clean transport layer for multi-agent work: reliable handoffs, clear job ownership, and no context bleed between specialists.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-loki" data-section="Loki">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8c-2-3-1-5 1-6 0 3 2 5 4 6 2-1 4-3 4-6 2 1 3 3 1 6"/><path d="M6 9c0 5 2.5 9 6 9s6-4 6-9"/><path d="M9 20h6"/></svg>
+            <div>
+              <p class="eyebrow">Cleanup, QA routing, and opportunity hygiene</p>
+              <h3>Loki</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Owns cleanup, optimization, mode switching, TideFlow prospect hygiene, and recurring QA/opportunity movement loops.</p>
+            <p><strong>How they work</strong>Loki reads trackers, stale dates, contact coverage, scheduler health, product QA reports, and operating-mode state to keep the machine and project lanes from drifting.</p>
+            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Long-term goal</strong>Become the system&#39;s reliability and momentum layer: cleaner workspaces, healthier queues, sharper prospects, and mode-aware automation.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-impulse" data-section="Impulse">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6l1-8Z"/></svg>
+            <div>
+              <p class="eyebrow">Trading discipline and market exposure</p>
+              <h3>Impulse</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Monitors trading posture, open orders, positions, broker/source truth, paper signals, and whether live risk is allowed or should fail closed.</p>
+            <p><strong>How they work</strong>Impulse refuses to book P&amp;L or trade state without a durable receipt chain: balances, positions, orders, fills, fees, market data, and quote validation.</p>
+            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Long-term goal</strong>Become a disciplined trading assistant with certified receipts, decision-grade exposure checks, and risk controls that fail closed when truth is incomplete.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-red" data-section="Red">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.3 7 10 4.1-1.7 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <div>
+              <p class="eyebrow">Product QA and adversarial review</p>
+              <h3>Red</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Finds broken flows, stale data, routing problems, misleading UI states, and product regressions before users run into them.</p>
+            <p><strong>How they work</strong>Red combines static checks, local builds, smoke tests, route probes, and browser QA when tooling/session access exists. It records blockers instead of pretending a full pass happened.</p>
+            <p><strong>Model</strong>Recent ledger models: GPT-5.4 / GPT-5 Codex.</p>
+            <p><strong>Long-term goal</strong>Become the automatic quality gate for every public product: authenticated smoke tests, route checks, console review, stale-data detection, and deploy drift alerts.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-doc" data-section="Doc">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>
+            <div>
+              <p class="eyebrow">Receipts, repairs, and artifact truth</p>
+              <h3>Doc</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Repairs receipt chains, corrects stale scheduler/watchdog artifacts, writes clear status truth, and keeps operational records aligned with live state.</p>
+            <p><strong>How they work</strong>Doc cross-checks run logs, jobs-state, repair tickets, ledgers, and report files, then patches the durable record without triggering public sends or risky external actions.</p>
+            <p><strong>Model</strong>Recent ledger models: gpt-5.5 and gpt-5.5/openai-codex.</p>
+            <p><strong>Long-term goal</strong>Become the audit layer for AgenticOS: every important run should leave a clean, current, verifiable trail.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-atlas" data-section="Atlas">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/></svg>
+            <div>
+              <p class="eyebrow">Financial planning and strategy</p>
+              <h3>Atlas</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Supports higher-level financial planning, portfolio strategy, debt elimination, wealth-building work, and supervision of research lanes.</p>
+            <p><strong>How they work</strong>Atlas works from shared context, Scout research, financial recovery plans, and strategy notes, then turns market and household constraints into practical decisions.</p>
+            <p><strong>Model</strong>Configured model: anthropic/claude-sonnet-4-5.</p>
+            <p><strong>Long-term goal</strong>Become a trustworthy strategic advisor with strong tool discipline, clear fallback disclosure, and durable plans that Cash can later verify against real numbers.</p>
+          </div>
+        </article>
+<article class="agent-section" id="agent-scout" data-section="Scout">
+          <div class="agent-section-head">
+            <svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 8-4 10-4-4-4 2 4-10 4 4 4-2Z"/><path d="m12 10-2 4"/></svg>
+            <div>
+              <p class="eyebrow">Research and opportunity discovery</p>
+              <h3>Scout</h3>
+            </div>
+          </div>
+          <div class="agent-section-grid">
+            <p><strong>What they do</strong>Scans markets, pain points, product opportunities, trends, and expansion signals so Atlas, Botler, and product agents can make better calls.</p>
+            <p><strong>How they work</strong>Scout is optimized for fast research passes and usable summaries, with factual accuracy and cited source trails prioritized over novelty.</p>
+            <p><strong>Model</strong>Configured model: google/gemini-2.5-flash.</p>
+            <p><strong>Long-term goal</strong>Become the first-pass research radar for new product wedges, market shifts, competitor signals, and customer pain worth turning into action.</p>
+          </div>
+        </article>
+        </section>
         <section class="facts" id="section-4" data-section="Notes" aria-label="Evidence and unknowns">
           <div class="fact-grid">
             <article class="fact-card"><p class="meta-label">Goal</p><h3>What we aimed for</h3><p>Move beyond one giant assistant by giving work to distinct agents with dedicated context, source files, tools, and escalation rules.</p></article>
@@ -814,12 +1043,6 @@ This project focuses on building a multi-agent operating system that coordinates
             <article class="fact-card"><p class="meta-label">Still Unknown</p><h3>Needs owner truth</h3><ul class="source-list"><li>Public packaging/pricing for AgenticOS is not documented.</li>
 <li>Which pieces should become a reusable client-facing system need owner confirmation.</li>
 <li>Hermes is documented as runtime/switchboard in architecture notes, but its current identity files mirror Jim and should be cleaned up before being presented as fully resolved.</li></ul></article>
-            <article class="fact-card"><p class="meta-label">Sources</p><h3>What this page used</h3><ul class="source-list"><li>Agents/context/latest.md</li>
-<li>Daily/2026-06-23.md</li>
-<li>.openclaw/openclaw.json</li>
-<li>.openclaw/workspace/operations/acp-agent-session-architecture.md</li>
-<li>.openclaw/workspace/agents/registry.json</li>
-<li>.openclaw/workspace/operations/model-matrix.md</li></ul></article>
             <article class="fact-card"><p class="meta-label">Next</p><h3>Reusable pattern</h3><p>This case study is about the operating pattern: scoped agents, durable memory, approval gates, and evidence trails that other teams can adapt.</p></article>
           </div>
         </section>
@@ -946,7 +1169,7 @@ This project focuses on building a multi-agent operating system that coordinates
           }
         });
       }, { rootMargin: "-35% 0px -45% 0px", threshold: 0.01 });
-      document.querySelectorAll(".story-panel, .roster-strip, .artifact-grid, .facts").forEach((panel) => observer.observe(panel));
+      document.querySelectorAll(".story-panel, .roster-strip, .artifact-grid, .agent-deep-dive, .facts").forEach((panel) => observer.observe(panel));
       const depthMarks = [25, 50, 75, 95];
       const sentDepth = new Set();
       function onScroll() {
