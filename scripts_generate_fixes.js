@@ -119,6 +119,16 @@ function agentIcon(name) {
   };
   return `<svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true">${icons[name] || '<path d="M12 3l9 9-9 9-9-9 9-9Z"/>'}</svg>`;
 }
+function controlIcon(name) {
+  const icons = {
+    Plan: '<path d="M4 12h16M12 4v16"/><path d="m8 8-4 4 4 4M16 8l4 4-4 4"/>',
+    Execute: '<path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 3"/><path d="m17 3 4 4-4 4"/>',
+    Verify: '<rect x="5" y="5" width="14" height="14" rx="2"/><path d="m8.5 12.5 2.5 2.5 4.5-6"/>',
+    Memory: '<path d="M8 7a4 4 0 0 1 8 0v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V7Z"/><path d="M8 10h8M8 14h8"/>',
+    Approval: '<circle cx="12" cy="12" r="8"/><path d="m8.5 12.5 2.2 2.2 4.8-5.4"/>',
+  };
+  return `<svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
+}
 function agenticosVisuals(item) {
   return `<article class="proof-card proof-memory">
           <h3>Memory</h3>
@@ -444,9 +454,9 @@ ${headFor(item)}
         gap: 22px;
         align-items: end;
         padding: clamp(18px, 2.4vw, 28px);
-        border: 1px solid var(--line);
+        border: 1px solid rgba(200, 154, 58, 0.68);
         border-radius: 12px;
-        background: var(--glass);
+        background: rgba(247, 241, 223, 0.055);
         backdrop-filter: blur(22px) saturate(1.2);
         -webkit-backdrop-filter: blur(22px) saturate(1.2);
       }
@@ -503,6 +513,9 @@ ${headFor(item)}
       .control-card {
         min-height: 310px;
         border-radius: 12px;
+        border-color: rgba(200, 154, 58, 0.68);
+        background: rgba(247, 241, 223, 0.055);
+        box-shadow: inset 0 0 42px rgba(247, 241, 223, 0.025);
       }
       .story-copy {
         display: grid;
@@ -542,10 +555,30 @@ ${headFor(item)}
         align-items: center;
         gap: 10px;
       }
-      .control-list li::before {
-        content: "◇";
-        color: var(--gold);
-        font-size: 15px;
+      .control-icon {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+        fill: none;
+        stroke: var(--gold);
+        stroke-width: 1.55;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .story-visual, .roster-strip, .proof-card {
+        border-color: rgba(200, 154, 58, 0.5);
+        background: rgba(247, 241, 223, 0.052);
+      }
+      .proof-card {
+        overflow: hidden;
+        border: 1px solid rgba(200, 154, 58, 0.5);
+        border-radius: 8px;
+        padding: clamp(14px, 1.8vw, 20px);
+        transform: translateY(var(--lift, 0px));
+        transition: transform 200ms ease, border-color 200ms ease;
+      }
+      .story-visual:hover, .roster-strip:hover, .proof-card:hover, .control-card:hover {
+        border-color: rgba(200, 154, 58, 0.88);
       }
       .terminal-panel {
         padding: 0;
@@ -859,11 +892,7 @@ ${headFor(item)}
               <h2>${esc(sectionTitle(item.sections[0]))}</h2>
               <p class="eyebrow">Botler</p>
               <ul class="control-list">
-                <li>Plan</li>
-                <li>Execute</li>
-                <li>Verify</li>
-                <li>Memory</li>
-                <li>Approval</li>
+                ${["Plan","Execute","Verify","Memory","Approval"].map(name => `<li>${controlIcon(name)}${name}</li>`).join("")}
               </ul>
             </div>
             <figure class="story-visual terminal-panel" data-tilt>
