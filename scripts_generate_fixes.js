@@ -710,32 +710,57 @@ ${headFor(item)}
         color: var(--fg);
       }
       .roster-strip {
+        position: sticky;
+        z-index: 24;
+        top: 72px;
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
-        gap: clamp(12px, 2.3vw, 28px);
-        padding: clamp(18px, 2.4vw, 28px);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: var(--glass);
-        backdrop-filter: blur(22px) saturate(1.2);
-        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+        gap: 6px;
+        width: 100%;
+        max-width: min(100%, 1040px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding: 8px;
+        border: 1px solid rgba(200, 154, 58, 0.5);
+        border-radius: 32px;
+        background:
+          linear-gradient(90deg, transparent 0 3%, var(--gold-soft) 18%, transparent 34% 66%, var(--gold-soft) 82%, transparent 97%),
+          radial-gradient(circle at var(--agent-rail-x, 50%) var(--agent-rail-y, 50%), rgba(255, 255, 255, 0.20), transparent 28%),
+          linear-gradient(115deg, rgba(255, 255, 255, 0.12), transparent 32%),
+          var(--glass);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(24px) saturate(1.45) contrast(1.04);
+        -webkit-backdrop-filter: blur(24px) saturate(1.45) contrast(1.04);
+      }
+      .roster-strip::-webkit-scrollbar {
+        display: none;
       }
       .roster-strip::before {
-        content: "Agent Roster";
-        flex-basis: 100%;
-        color: var(--fg);
-        font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
-        font-size: clamp(28px, 3vw, 40px);
-        text-transform: none;
+        content: "Agents";
+        flex: 0 0 auto;
+        min-width: 82px;
+        display: grid;
+        place-items: center;
+        color: var(--gold);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
       }
       .roster-strip a {
+        flex: 0 0 auto;
+        min-width: 124px;
+        min-height: 54px;
         display: inline-flex;
+        justify-content: center;
         align-items: center;
         gap: 10px;
         border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 10px 13px;
+        border-radius: 24px;
+        padding: 8px 14px;
         color: var(--muted);
         font-size: 10px;
         font-weight: 800;
@@ -743,11 +768,14 @@ ${headFor(item)}
         letter-spacing: 0.12em;
         transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
       }
-      .roster-strip a:hover {
+      .roster-strip a:hover, .roster-strip a.is-active {
         color: var(--fg);
         border-color: var(--gold);
         background: var(--gold-soft);
         transform: translateY(-2px);
+      }
+      .roster-strip a.is-active {
+        box-shadow: inset 0 0 0 1px rgba(200, 154, 58, 0.28);
       }
       .agent-icon {
         width: 30px;
@@ -787,7 +815,7 @@ ${headFor(item)}
         background: rgba(247, 241, 223, 0.052);
         backdrop-filter: blur(22px) saturate(1.2);
         -webkit-backdrop-filter: blur(22px) saturate(1.2);
-        scroll-margin-top: 92px;
+        scroll-margin-top: 168px;
       }
       .agent-section:hover {
         border-color: rgba(200, 154, 58, 0.88);
@@ -1086,15 +1114,13 @@ ${headFor(item)}
           <a href="#section-3">Proof Trail</a>
           <a href="#section-4">Notes</a>
         </nav>
-        <section class="story" aria-label="AgenticOS roster">
-          <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
-            ${agentProfiles.map(agent => `<a href="#agent-${agentSlug(agent.name)}">${agentIcon(agent.name)}${agent.name}</a>`).join("")}
-          </aside>
-        </section>
         <section class="artifact-grid" id="section-3" data-section="Proof Trail" aria-label="AgenticOS source artifacts">
           ${agenticosVisuals(item)}
         </section>
         <section class="agent-deep-dive" id="section-agents" data-section="Agent Details" aria-label="Agent details">
+          <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
+            ${agentProfiles.map(agent => `<a href="#agent-${agentSlug(agent.name)}">${agentIcon(agent.name)}${agent.name}</a>`).join("")}
+          </aside>
           <p class="eyebrow">Agent Details</p>
           ${agentProfileSections()}
         </section>
@@ -1218,6 +1244,33 @@ ${headFor(item)}
           track("click", { label: "agenticos_artifact", target: node.querySelector("figcaption")?.textContent || "" });
         });
       });
+      const rosterRail = document.querySelector(".roster-strip");
+      const agentLinks = Array.from(document.querySelectorAll(".roster-strip a"));
+      const agentSections = Array.from(document.querySelectorAll(".agent-section"));
+      let activeAgentId = "";
+      if (rosterRail) {
+        rosterRail.addEventListener("pointermove", (event) => {
+          const rect = rosterRail.getBoundingClientRect();
+          rosterRail.style.setProperty("--agent-rail-x", event.clientX - rect.left + "px");
+          rosterRail.style.setProperty("--agent-rail-y", event.clientY - rect.top + "px");
+        });
+      }
+      function updateAgentRail() {
+        if (!agentLinks.length || !agentSections.length) return;
+        const targetLine = (rosterRail?.offsetHeight || 0) + 112;
+        let current = agentSections[0];
+        for (const section of agentSections) {
+          if (section.getBoundingClientRect().top <= targetLine) current = section;
+        }
+        if (current.id === activeAgentId) return;
+        activeAgentId = current.id;
+        agentLinks.forEach((link) => {
+          const active = link.getAttribute("href") === "#" + activeAgentId;
+          link.classList.toggle("is-active", active);
+          link.setAttribute("aria-current", active ? "true" : "false");
+          if (active) link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        });
+      }
       const links = Array.from(document.querySelectorAll(".jumpbar a"));
       const seenSections = new Set();
       const observer = new IntersectionObserver((entries) => {
@@ -1237,6 +1290,7 @@ ${headFor(item)}
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const ratio = window.scrollY / max;
         root.style.setProperty("--tower-shift", (ratio * 52).toFixed(2) + "px");
+        updateAgentRail();
         const depth = Math.round(ratio * 100);
         depthMarks.forEach((mark) => {
           if (depth >= mark && !sentDepth.has(mark)) {

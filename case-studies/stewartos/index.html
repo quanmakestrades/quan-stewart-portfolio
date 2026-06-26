@@ -431,32 +431,57 @@
         color: var(--fg);
       }
       .roster-strip {
+        position: sticky;
+        z-index: 24;
+        top: 72px;
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
-        gap: clamp(12px, 2.3vw, 28px);
-        padding: clamp(18px, 2.4vw, 28px);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: var(--glass);
-        backdrop-filter: blur(22px) saturate(1.2);
-        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+        gap: 6px;
+        width: 100%;
+        max-width: min(100%, 1040px);
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding: 8px;
+        border: 1px solid rgba(200, 154, 58, 0.5);
+        border-radius: 32px;
+        background:
+          linear-gradient(90deg, transparent 0 3%, var(--gold-soft) 18%, transparent 34% 66%, var(--gold-soft) 82%, transparent 97%),
+          radial-gradient(circle at var(--agent-rail-x, 50%) var(--agent-rail-y, 50%), rgba(255, 255, 255, 0.20), transparent 28%),
+          linear-gradient(115deg, rgba(255, 255, 255, 0.12), transparent 32%),
+          var(--glass);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+        backdrop-filter: blur(24px) saturate(1.45) contrast(1.04);
+        -webkit-backdrop-filter: blur(24px) saturate(1.45) contrast(1.04);
+      }
+      .roster-strip::-webkit-scrollbar {
+        display: none;
       }
       .roster-strip::before {
-        content: "Agent Roster";
-        flex-basis: 100%;
-        color: var(--fg);
-        font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
-        font-size: clamp(28px, 3vw, 40px);
-        text-transform: none;
+        content: "Agents";
+        flex: 0 0 auto;
+        min-width: 82px;
+        display: grid;
+        place-items: center;
+        color: var(--gold);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
       }
       .roster-strip a {
+        flex: 0 0 auto;
+        min-width: 124px;
+        min-height: 54px;
         display: inline-flex;
+        justify-content: center;
         align-items: center;
         gap: 10px;
         border: 1px solid var(--line);
-        border-radius: 999px;
-        padding: 10px 13px;
+        border-radius: 24px;
+        padding: 8px 14px;
         color: var(--muted);
         font-size: 10px;
         font-weight: 800;
@@ -464,11 +489,14 @@
         letter-spacing: 0.12em;
         transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
       }
-      .roster-strip a:hover {
+      .roster-strip a:hover, .roster-strip a.is-active {
         color: var(--fg);
         border-color: var(--gold);
         background: var(--gold-soft);
         transform: translateY(-2px);
+      }
+      .roster-strip a.is-active {
+        box-shadow: inset 0 0 0 1px rgba(200, 154, 58, 0.28);
       }
       .agent-icon {
         width: 30px;
@@ -508,7 +536,7 @@
         background: rgba(247, 241, 223, 0.052);
         backdrop-filter: blur(22px) saturate(1.2);
         -webkit-backdrop-filter: blur(22px) saturate(1.2);
-        scroll-margin-top: 92px;
+        scroll-margin-top: 168px;
       }
       .agent-section:hover {
         border-color: rgba(200, 154, 58, 0.88);
@@ -826,11 +854,6 @@
           <a href="#section-3">Proof Trail</a>
           <a href="#section-4">Notes</a>
         </nav>
-        <section class="story" aria-label="AgenticOS roster">
-          <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
-            <a href="#agent-botler"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 18l-2.1-5.3L4 10.6l5.9-2.1L12 3Z"/><path d="M19 4v4M21 6h-4"/></svg>Botler</a><a href="#agent-cash"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/></svg>Cash</a><a href="#agent-dev"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg>Dev</a><a href="#agent-jim"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/></svg>Jim</a><a href="#agent-hermes"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15c7-1 11-4.5 16-11-1.2 6.8-4.8 12-13 15"/><path d="M8 16c2.5-3.4 5.9-5.8 10-7"/></svg>Hermes</a><a href="#agent-loki"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8c-2-3-1-5 1-6 0 3 2 5 4 6 2-1 4-3 4-6 2 1 3 3 1 6"/><path d="M6 9c0 5 2.5 9 6 9s6-4 6-9"/><path d="M9 20h6"/></svg>Loki</a><a href="#agent-impulse"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6l1-8Z"/></svg>Impulse</a><a href="#agent-red"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.3 7 10 4.1-1.7 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Red</a><a href="#agent-doc"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>Doc</a><a href="#agent-atlas"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/></svg>Atlas</a><a href="#agent-scout"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 8-4 10-4-4-4 2 4-10 4 4 4-2Z"/><path d="m12 10-2 4"/></svg>Scout</a>
-          </aside>
-        </section>
         <section class="artifact-grid" id="section-3" data-section="Proof Trail" aria-label="AgenticOS source artifacts">
           <article class="proof-card proof-memory">
           <h3>Memory</h3>
@@ -868,6 +891,9 @@ This project focuses on building a multi-agent operating system that coordinates
         </article>
         </section>
         <section class="agent-deep-dive" id="section-agents" data-section="Agent Details" aria-label="Agent details">
+          <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
+            <a href="#agent-botler"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.1 5.5L20 10.6l-5.9 2.1L12 18l-2.1-5.3L4 10.6l5.9-2.1L12 3Z"/><path d="M19 4v4M21 6h-4"/></svg>Botler</a><a href="#agent-cash"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M16 7.5c-1-1-2.4-1.5-4-1.5-2.2 0-4 1.1-4 3 0 4.3 8 1.7 8 6 0 1.9-1.8 3-4 3-1.7 0-3.2-.6-4.2-1.7"/></svg>Cash</a><a href="#agent-dev"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/></svg>Dev</a><a href="#agent-jim"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1.4-3.2 3.8-5 7-5s5.6 1.8 7 5"/></svg>Jim</a><a href="#agent-hermes"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15c7-1 11-4.5 16-11-1.2 6.8-4.8 12-13 15"/><path d="M8 16c2.5-3.4 5.9-5.8 10-7"/></svg>Hermes</a><a href="#agent-loki"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8c-2-3-1-5 1-6 0 3 2 5 4 6 2-1 4-3 4-6 2 1 3 3 1 6"/><path d="M6 9c0 5 2.5 9 6 9s6-4 6-9"/><path d="M9 20h6"/></svg>Loki</a><a href="#agent-impulse"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h6l-1 8 8-12h-6l1-8Z"/></svg>Impulse</a><a href="#agent-red"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.3 7 10 4.1-1.7 7-5.4 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>Red</a><a href="#agent-doc"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7V3Z"/><path d="M14 3v5h4M9 13h6M9 17h6"/></svg>Doc</a><a href="#agent-atlas"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9M12 3c-2.5 2.6-3.8 5.6-3.8 9s1.3 6.4 3.8 9"/></svg>Atlas</a><a href="#agent-scout"><svg class="agent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 8-4 10-4-4-4 2 4-10 4 4 4-2Z"/><path d="m12 10-2 4"/></svg>Scout</a>
+          </aside>
           <p class="eyebrow">Agent Details</p>
           <article class="agent-section" id="agent-botler" data-section="Botler">
           <div class="agent-section-head">
@@ -1157,6 +1183,33 @@ This project focuses on building a multi-agent operating system that coordinates
           track("click", { label: "agenticos_artifact", target: node.querySelector("figcaption")?.textContent || "" });
         });
       });
+      const rosterRail = document.querySelector(".roster-strip");
+      const agentLinks = Array.from(document.querySelectorAll(".roster-strip a"));
+      const agentSections = Array.from(document.querySelectorAll(".agent-section"));
+      let activeAgentId = "";
+      if (rosterRail) {
+        rosterRail.addEventListener("pointermove", (event) => {
+          const rect = rosterRail.getBoundingClientRect();
+          rosterRail.style.setProperty("--agent-rail-x", event.clientX - rect.left + "px");
+          rosterRail.style.setProperty("--agent-rail-y", event.clientY - rect.top + "px");
+        });
+      }
+      function updateAgentRail() {
+        if (!agentLinks.length || !agentSections.length) return;
+        const targetLine = (rosterRail?.offsetHeight || 0) + 112;
+        let current = agentSections[0];
+        for (const section of agentSections) {
+          if (section.getBoundingClientRect().top <= targetLine) current = section;
+        }
+        if (current.id === activeAgentId) return;
+        activeAgentId = current.id;
+        agentLinks.forEach((link) => {
+          const active = link.getAttribute("href") === "#" + activeAgentId;
+          link.classList.toggle("is-active", active);
+          link.setAttribute("aria-current", active ? "true" : "false");
+          if (active) link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        });
+      }
       const links = Array.from(document.querySelectorAll(".jumpbar a"));
       const seenSections = new Set();
       const observer = new IntersectionObserver((entries) => {
@@ -1176,6 +1229,7 @@ This project focuses on building a multi-agent operating system that coordinates
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const ratio = window.scrollY / max;
         root.style.setProperty("--tower-shift", (ratio * 52).toFixed(2) + "px");
+        updateAgentRail();
         const depth = Math.round(ratio * 100);
         depthMarks.forEach((mark) => {
           if (depth >= mark && !sentDepth.has(mark)) {
