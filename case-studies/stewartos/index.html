@@ -906,7 +906,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Receives the human request, decides whether the work should stay in the main session or route to a specialist, keeps approval gates visible, and turns scattered work into durable reports.</p>
             <p><strong>How they work</strong>Botler works from the shared memory, run ledger, operating-mode contracts, and project artifacts. It does not treat chat as the source of truth when a file, receipt, route, or deploy can be checked.</p>
-            <p><strong>Model</strong>Primary documented model: openai-codex/gpt-5.4 for Tier 0 direct sessions.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5. Heartbeat also uses openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become the dependable front desk for the whole system: one command surface, clear routing, honest fallback disclosure, and no silent downgrade on household-critical or business-critical work.</p>
           </div>
         </article>
@@ -921,7 +921,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Keeps the money story honest: revenue movement, receivables, outreach proof, P&amp;L gaps, and whether a project actually moved closer to cash.</p>
             <p><strong>How they work</strong>Cash compares claims against ledgers, invoices, outreach trackers, payment receipts, broker/account receipts, and daily KPI artifacts before it lets a number become operator truth.</p>
-            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.4.</p>
             <p><strong>Long-term goal</strong>Reach decision-grade financial reporting: clean daily cash position, booked revenue, overdue proofs, and automatic escalation when the source chain is missing.</p>
           </div>
         </article>
@@ -936,7 +936,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Handles implementation, source inspection, deploy repair, runtime debugging, and the narrow code changes needed to unblock products.</p>
             <p><strong>How they work</strong>Dev works against the real repo, the live route, the scheduler state, and the generated artifacts. It pairs with Red and Doc so fixes are checked and recorded instead of merely attempted.</p>
-            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become a reliable build lane that can take a scoped issue from diagnosis to verified deploy with receipts, while leaving unrelated work untouched.</p>
           </div>
         </article>
@@ -951,7 +951,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Runs the music/storefront lane: content drafts, outbound opportunities, site health checks, catalog status, and approval-gated revenue actions.</p>
             <p><strong>How they work</strong>Jim reads F10.0RD artifacts, content dashboards, draft packets, storefront checks, CRM/inbox trackers, and approval state before recommending a send, post, listing, or follow-up.</p>
-            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Turn F10.0RD into a measurable operating loop where content, outreach, storefront health, orders, and revenue all reconcile cleanly.</p>
           </div>
         </article>
@@ -966,7 +966,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Carries runtime/orchestration context, agent communication, task handoffs, and switchboard-style execution without muddying Botler&#39;s family/business context.</p>
             <p><strong>How they work</strong>Hermes owns operational heavy lifting: route messages, run bounded tasks, move state between agents, and raise `needs_decision` when the work requires Botler or Quan.</p>
-            <p><strong>Model</strong>Documented as eligible for faster models; not allowed to make Tier 0 policy decisions.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5. Older architecture notes recommended google/gemini-2.5-flash for fast transport work, with escalation to stronger models.</p>
             <p><strong>Long-term goal</strong>Become the clean transport layer for multi-agent work: reliable handoffs, clear job ownership, and no context bleed between specialists.</p>
           </div>
         </article>
@@ -981,7 +981,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Owns cleanup, optimization, mode switching, TideFlow prospect hygiene, and recurring QA/opportunity movement loops.</p>
             <p><strong>How they work</strong>Loki reads trackers, stale dates, contact coverage, scheduler health, product QA reports, and operating-mode state to keep the machine and project lanes from drifting.</p>
-            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become the system&#39;s reliability and momentum layer: cleaner workspaces, healthier queues, sharper prospects, and mode-aware automation.</p>
           </div>
         </article>
@@ -996,7 +996,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Monitors trading posture, open orders, positions, broker/source truth, paper signals, and whether live risk is allowed or should fail closed.</p>
             <p><strong>How they work</strong>Impulse refuses to book P&amp;L or trade state without a durable receipt chain: balances, positions, orders, fills, fees, market data, and quote validation.</p>
-            <p><strong>Model</strong>Recent ledger model: openai-codex/gpt-5.4.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become a disciplined trading assistant with certified receipts, decision-grade exposure checks, and risk controls that fail closed when truth is incomplete.</p>
           </div>
         </article>
@@ -1011,7 +1011,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Finds broken flows, stale data, routing problems, misleading UI states, and product regressions before users run into them.</p>
             <p><strong>How they work</strong>Red combines static checks, local builds, smoke tests, route probes, and browser QA when tooling/session access exists. It records blockers instead of pretending a full pass happened.</p>
-            <p><strong>Model</strong>Recent ledger models: GPT-5.4 / GPT-5 Codex.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become the automatic quality gate for every public product: authenticated smoke tests, route checks, console review, stale-data detection, and deploy drift alerts.</p>
           </div>
         </article>
@@ -1026,7 +1026,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Repairs receipt chains, corrects stale scheduler/watchdog artifacts, writes clear status truth, and keeps operational records aligned with live state.</p>
             <p><strong>How they work</strong>Doc cross-checks run logs, jobs-state, repair tickets, ledgers, and report files, then patches the durable record without triggering public sends or risky external actions.</p>
-            <p><strong>Model</strong>Recent ledger models: gpt-5.5 and gpt-5.5/openai-codex.</p>
+            <p><strong>Model</strong>Current OpenClaw profile: openai/gpt-5.5.</p>
             <p><strong>Long-term goal</strong>Become the audit layer for AgenticOS: every important run should leave a clean, current, verifiable trail.</p>
           </div>
         </article>
@@ -1041,7 +1041,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Supports higher-level financial planning, portfolio strategy, debt elimination, wealth-building work, and supervision of research lanes.</p>
             <p><strong>How they work</strong>Atlas works from shared context, Scout research, financial recovery plans, and strategy notes, then turns market and household constraints into practical decisions.</p>
-            <p><strong>Model</strong>Configured model: anthropic/claude-sonnet-4-5.</p>
+            <p><strong>Model</strong>Agent registry model: anthropic/claude-sonnet-4-5.</p>
             <p><strong>Long-term goal</strong>Become a trustworthy strategic advisor with strong tool discipline, clear fallback disclosure, and durable plans that Cash can later verify against real numbers.</p>
           </div>
         </article>
@@ -1056,7 +1056,7 @@ This project focuses on building a multi-agent operating system that coordinates
           <div class="agent-section-grid">
             <p><strong>What they do</strong>Scans markets, pain points, product opportunities, trends, and expansion signals so Atlas, Botler, and product agents can make better calls.</p>
             <p><strong>How they work</strong>Scout is optimized for fast research passes and usable summaries, with factual accuracy and cited source trails prioritized over novelty.</p>
-            <p><strong>Model</strong>Configured model: google/gemini-2.5-flash.</p>
+            <p><strong>Model</strong>Agent registry model: google/gemini-2.5-flash.</p>
             <p><strong>Long-term goal</strong>Become the first-pass research radar for new product wedges, market shifts, competitor signals, and customer pain worth turning into action.</p>
           </div>
         </article>

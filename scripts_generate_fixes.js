@@ -134,7 +134,7 @@ const agentProfiles = [
   {
     name: "Botler",
     role: "Control plane",
-    model: "Primary documented model: openai-codex/gpt-5.4 for Tier 0 direct sessions.",
+    model: "Current OpenClaw profile: openai/gpt-5.5. Heartbeat also uses openai/gpt-5.5.",
     does: "Receives the human request, decides whether the work should stay in the main session or route to a specialist, keeps approval gates visible, and turns scattered work into durable reports.",
     how: "Botler works from the shared memory, run ledger, operating-mode contracts, and project artifacts. It does not treat chat as the source of truth when a file, receipt, route, or deploy can be checked.",
     goal: "Become the dependable front desk for the whole system: one command surface, clear routing, honest fallback disclosure, and no silent downgrade on household-critical or business-critical work."
@@ -142,7 +142,7 @@ const agentProfiles = [
   {
     name: "Cash",
     role: "Revenue and finance truth",
-    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    model: "Current OpenClaw profile: openai/gpt-5.4.",
     does: "Keeps the money story honest: revenue movement, receivables, outreach proof, P&L gaps, and whether a project actually moved closer to cash.",
     how: "Cash compares claims against ledgers, invoices, outreach trackers, payment receipts, broker/account receipts, and daily KPI artifacts before it lets a number become operator truth.",
     goal: "Reach decision-grade financial reporting: clean daily cash position, booked revenue, overdue proofs, and automatic escalation when the source chain is missing."
@@ -150,7 +150,7 @@ const agentProfiles = [
   {
     name: "Dev",
     role: "Engineering repair and build execution",
-    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Handles implementation, source inspection, deploy repair, runtime debugging, and the narrow code changes needed to unblock products.",
     how: "Dev works against the real repo, the live route, the scheduler state, and the generated artifacts. It pairs with Red and Doc so fixes are checked and recorded instead of merely attempted.",
     goal: "Become a reliable build lane that can take a scoped issue from diagnosis to verified deploy with receipts, while leaving unrelated work untouched."
@@ -158,7 +158,7 @@ const agentProfiles = [
   {
     name: "Jim",
     role: "F10.0RD growth and storefront operator",
-    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Runs the music/storefront lane: content drafts, outbound opportunities, site health checks, catalog status, and approval-gated revenue actions.",
     how: "Jim reads F10.0RD artifacts, content dashboards, draft packets, storefront checks, CRM/inbox trackers, and approval state before recommending a send, post, listing, or follow-up.",
     goal: "Turn F10.0RD into a measurable operating loop where content, outreach, storefront health, orders, and revenue all reconcile cleanly."
@@ -166,7 +166,7 @@ const agentProfiles = [
   {
     name: "Hermes",
     role: "Runtime and transport layer",
-    model: "Documented as eligible for faster models; not allowed to make Tier 0 policy decisions.",
+    model: "Current OpenClaw profile: openai/gpt-5.5. Older architecture notes recommended google/gemini-2.5-flash for fast transport work, with escalation to stronger models.",
     does: "Carries runtime/orchestration context, agent communication, task handoffs, and switchboard-style execution without muddying Botler's family/business context.",
     how: "Hermes owns operational heavy lifting: route messages, run bounded tasks, move state between agents, and raise `needs_decision` when the work requires Botler or Quan.",
     goal: "Become the clean transport layer for multi-agent work: reliable handoffs, clear job ownership, and no context bleed between specialists."
@@ -174,7 +174,7 @@ const agentProfiles = [
   {
     name: "Loki",
     role: "Cleanup, QA routing, and opportunity hygiene",
-    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Owns cleanup, optimization, mode switching, TideFlow prospect hygiene, and recurring QA/opportunity movement loops.",
     how: "Loki reads trackers, stale dates, contact coverage, scheduler health, product QA reports, and operating-mode state to keep the machine and project lanes from drifting.",
     goal: "Become the system's reliability and momentum layer: cleaner workspaces, healthier queues, sharper prospects, and mode-aware automation."
@@ -182,7 +182,7 @@ const agentProfiles = [
   {
     name: "Impulse",
     role: "Trading discipline and market exposure",
-    model: "Recent ledger model: openai-codex/gpt-5.4.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Monitors trading posture, open orders, positions, broker/source truth, paper signals, and whether live risk is allowed or should fail closed.",
     how: "Impulse refuses to book P&L or trade state without a durable receipt chain: balances, positions, orders, fills, fees, market data, and quote validation.",
     goal: "Become a disciplined trading assistant with certified receipts, decision-grade exposure checks, and risk controls that fail closed when truth is incomplete."
@@ -190,7 +190,7 @@ const agentProfiles = [
   {
     name: "Red",
     role: "Product QA and adversarial review",
-    model: "Recent ledger models: GPT-5.4 / GPT-5 Codex.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Finds broken flows, stale data, routing problems, misleading UI states, and product regressions before users run into them.",
     how: "Red combines static checks, local builds, smoke tests, route probes, and browser QA when tooling/session access exists. It records blockers instead of pretending a full pass happened.",
     goal: "Become the automatic quality gate for every public product: authenticated smoke tests, route checks, console review, stale-data detection, and deploy drift alerts."
@@ -198,7 +198,7 @@ const agentProfiles = [
   {
     name: "Doc",
     role: "Receipts, repairs, and artifact truth",
-    model: "Recent ledger models: gpt-5.5 and gpt-5.5/openai-codex.",
+    model: "Current OpenClaw profile: openai/gpt-5.5.",
     does: "Repairs receipt chains, corrects stale scheduler/watchdog artifacts, writes clear status truth, and keeps operational records aligned with live state.",
     how: "Doc cross-checks run logs, jobs-state, repair tickets, ledgers, and report files, then patches the durable record without triggering public sends or risky external actions.",
     goal: "Become the audit layer for AgenticOS: every important run should leave a clean, current, verifiable trail."
@@ -206,7 +206,7 @@ const agentProfiles = [
   {
     name: "Atlas",
     role: "Financial planning and strategy",
-    model: "Configured model: anthropic/claude-sonnet-4-5.",
+    model: "Agent registry model: anthropic/claude-sonnet-4-5.",
     does: "Supports higher-level financial planning, portfolio strategy, debt elimination, wealth-building work, and supervision of research lanes.",
     how: "Atlas works from shared context, Scout research, financial recovery plans, and strategy notes, then turns market and household constraints into practical decisions.",
     goal: "Become a trustworthy strategic advisor with strong tool discipline, clear fallback disclosure, and durable plans that Cash can later verify against real numbers."
@@ -214,7 +214,7 @@ const agentProfiles = [
   {
     name: "Scout",
     role: "Research and opportunity discovery",
-    model: "Configured model: google/gemini-2.5-flash.",
+    model: "Agent registry model: google/gemini-2.5-flash.",
     does: "Scans markets, pain points, product opportunities, trends, and expansion signals so Atlas, Botler, and product agents can make better calls.",
     how: "Scout is optimized for fast research passes and usable summaries, with factual accuracy and cited source trails prioritized over novelty.",
     goal: "Become the first-pass research radar for new product wedges, market shifts, competitor signals, and customer pain worth turning into action."
