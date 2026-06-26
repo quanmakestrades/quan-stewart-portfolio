@@ -102,18 +102,19 @@ function agenticosVisuals(item) {
   }).join("\n");
 }
 function agenticosSections(item) {
-  return (item.sections || []).map((section, index) => {
+  return (item.sections || []).slice(1).map((section, index) => {
+    const sectionIndex = index + 2;
     const title = sectionTitle(section);
     const body = sectionBody(section);
-    const visual = sectionImage(item, section, index) || item.images?.[0] || "";
-    return `<article class="story-panel" id="section-${index + 1}" data-section="${attr(title)}">
+    const visual = sectionImage(item, section, sectionIndex - 1) || item.images?.[0] || "";
+    return `<article class="story-panel" id="section-${sectionIndex}" data-section="${attr(title)}">
           <div class="story-copy">
-            <p class="eyebrow">${String(index + 1).padStart(2, "0")} / ${esc(item.category)}</p>
+            <p class="eyebrow">${String(sectionIndex).padStart(2, "0")} / ${esc(item.category)}</p>
             <h2>${esc(title)}</h2>
             <p>${esc(body)}</p>
           </div>
           ${visual ? `<figure class="story-visual" data-tilt>
-            <img src="${attr(visual)}" alt="${attr(item.title)} ${attr(title)} source artifact" loading="${index === 0 ? "eager" : "lazy"}" />
+            <img src="${attr(visual)}" alt="${attr(item.title)} ${attr(title)} source artifact" loading="lazy" />
           </figure>` : ""}
         </article>`;
   }).join("\n");
@@ -136,7 +137,22 @@ ${headFor(item)}
         --gold: #c89a3a;
         --gold-soft: rgba(200, 154, 58, 0.18);
         --pad: clamp(18px, 4vw, 56px);
-        --max: 1180px;
+        --max: 1480px;
+        --bg-art-opacity: 0.74;
+        --bg-art-filter: none;
+      }
+      [data-theme="light"] {
+        color-scheme: light;
+        --bg: #f7f5ef;
+        --fg: #090907;
+        --muted: rgba(9, 9, 7, 0.68);
+        --line: rgba(113, 78, 23, 0.28);
+        --glass: rgba(255, 252, 242, 0.68);
+        --glass-strong: rgba(255, 252, 242, 0.82);
+        --gold: #986815;
+        --gold-soft: rgba(152, 104, 21, 0.14);
+        --bg-art-opacity: 0.22;
+        --bg-art-filter: invert(1) hue-rotate(180deg) saturate(0.72) contrast(1.05);
       }
       * { box-sizing: border-box; }
       html { background: var(--bg); scroll-behavior: smooth; }
@@ -148,22 +164,45 @@ ${headFor(item)}
         font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         line-height: 1.45;
       }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(31vw, 360px);
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("/assets/case-studies/agenticos/control-tower-bg.png");
+        background-size: auto 100svh;
+        background-position: left -48px;
+        background-repeat: no-repeat;
+        opacity: var(--bg-art-opacity);
+        filter: var(--bg-art-filter);
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: var(--bg);
+        opacity: 0.08;
+      }
       body::-webkit-scrollbar { width: 0; height: 0; }
       a { color: inherit; text-decoration: none; }
       button, input, textarea { font: inherit; color: inherit; }
       button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 1px solid var(--gold); outline-offset: 5px; }
       .topbar {
         position: fixed;
-        z-index: 20;
+        z-index: 30;
         inset: 0 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 20px;
-        padding: 18px var(--pad);
+        padding: 24px var(--pad);
         pointer-events: none;
       }
-      .topbar a {
+      .topbar a, .theme-toggle {
         pointer-events: auto;
         color: var(--muted);
         font-size: 11px;
@@ -171,20 +210,48 @@ ${headFor(item)}
         text-transform: uppercase;
         letter-spacing: 0.14em;
       }
+      .brand {
+        color: var(--gold) !important;
+        font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
+        font-size: 31px !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.03em !important;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(24px, 5vw, 64px);
+      }
       .topbar a:hover { color: var(--gold); }
+      .theme-toggle {
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      .theme-toggle::before, .theme-toggle::after {
+        content: "";
+        grid-area: 1 / 1;
+        width: 19px;
+        height: 19px;
+        border: 1px solid var(--gold);
+        transform: rotate(45deg);
+      }
+      .theme-toggle::after {
+        width: 9px;
+        height: 9px;
+      }
       .case-shell {
         position: relative;
+        z-index: 1;
         min-height: 100svh;
       }
       .tower-wrap {
-        position: fixed;
-        z-index: 0;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: min(30vw, 360px);
-        overflow: hidden;
-        pointer-events: none;
+        display: none;
       }
       .tower-sticky {
         height: 100svh;
@@ -206,10 +273,10 @@ ${headFor(item)}
       }
       .content {
         position: relative;
-        z-index: 1;
+        z-index: 2;
         width: min(var(--max), 100%);
         margin: 0 auto;
-        padding: 120px var(--pad) 0 clamp(120px, 28vw, 340px);
+        padding: 92px clamp(28px, 4vw, 60px) 0 clamp(320px, 25vw, 390px);
       }
       .eyebrow, .meta-label, .artifact figcaption, .feedback-status {
         color: var(--muted);
@@ -226,34 +293,68 @@ ${headFor(item)}
         letter-spacing: 0.04em;
       }
       .hero {
-        min-height: 84svh;
+        min-height: 58svh;
         display: grid;
-        align-content: end;
-        gap: clamp(24px, 5vw, 60px);
-        padding-bottom: clamp(38px, 8vw, 92px);
+        grid-template-columns: minmax(0, 0.78fr) minmax(420px, 1.08fr);
+        align-items: center;
+        gap: clamp(34px, 5vw, 86px);
+        padding: 34px 0 clamp(28px, 5vw, 58px);
       }
       h1 {
-        margin-top: 14px;
-        font-size: clamp(58px, 11vw, 156px);
+        margin-top: 12px;
+        font-size: clamp(66px, 8.6vw, 112px);
         line-height: 0.86;
+        text-transform: none;
+        letter-spacing: -0.025em;
+      }
+      .title-rule {
+        display: grid;
+        grid-template-columns: 1fr 36px 1fr;
+        align-items: center;
+        gap: 16px;
+        margin: 22px 0;
+        color: var(--gold);
+      }
+      .title-rule::before, .title-rule::after {
+        content: "";
+        height: 1px;
+        background: var(--gold);
+        opacity: 0.55;
+      }
+      .title-rule span {
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        line-height: 1;
       }
       .deck {
-        max-width: 58ch;
-        margin: 24px 0 0;
+        max-width: 43ch;
+        margin: 34px 0 0;
         color: var(--muted);
-        font-size: clamp(18px, 2.2vw, 27px);
-        line-height: 1.22;
+        font-size: clamp(16px, 1.45vw, 20px);
+        line-height: 1.55;
+      }
+      .case-meta {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 22px;
+      }
+      .case-meta .meta-row {
+        min-height: auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
       }
       .meta-glass, .story-panel, .fact-card, .comment-card, .comment-form input, .comment-form textarea {
         border: 1px solid var(--line);
         background: var(--glass);
-        backdrop-filter: blur(20px) saturate(1.25);
-        -webkit-backdrop-filter: blur(20px) saturate(1.25);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        backdrop-filter: blur(22px) saturate(1.2);
+        -webkit-backdrop-filter: blur(22px) saturate(1.2);
       }
       .meta-glass {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1px;
+        display: none;
       }
       .meta-row {
         min-height: 118px;
@@ -268,14 +369,14 @@ ${headFor(item)}
       .jumpbar {
         position: sticky;
         z-index: 12;
-        top: 64px;
+        top: 78px;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         padding: 8px;
-        margin-bottom: clamp(46px, 8vw, 96px);
+        margin: 22px 0;
         border: 1px solid var(--line);
-        background: rgba(7, 7, 7, 0.72);
+        background: color-mix(in srgb, var(--bg) 78%, transparent);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
       }
@@ -298,17 +399,36 @@ ${headFor(item)}
       }
       .artifact-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        grid-template-columns: 1.15fr 1fr 0.86fr;
+        gap: 22px;
+        align-items: end;
+        padding: clamp(22px, 4vw, 46px);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--glass);
+        backdrop-filter: blur(22px) saturate(1.2);
+        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+      }
+      .artifact-grid::before {
+        content: "Proof Trail";
+        grid-column: 1 / -1;
+        color: var(--fg);
+        font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
+        font-size: clamp(28px, 3vw, 40px);
       }
       .artifact {
         margin: 0;
         overflow: hidden;
         border: 1px solid var(--line);
-        background: var(--glass-strong);
+        border-radius: 8px;
+        background: rgba(10, 10, 10, 0.56);
         transform: translateY(var(--lift, 0px));
         transition: transform 200ms ease, border-color 200ms ease;
       }
+      .artifact:nth-child(2) { grid-column: 1; }
+      .artifact:nth-child(3) { grid-column: 2; }
+      .artifact:nth-child(4) { grid-column: 3; }
+      .artifact:nth-child(5) { display: none; }
       .artifact:hover, .story-visual:hover {
         --lift: -4px;
         border-color: var(--gold);
@@ -324,30 +444,40 @@ ${headFor(item)}
       }
       .story {
         display: grid;
-        gap: clamp(42px, 8vw, 108px);
-        padding: clamp(40px, 8vw, 96px) 0;
+        gap: 22px;
+        padding: 22px 0 clamp(44px, 8vw, 92px);
       }
       .story-panel {
-        min-height: 68svh;
+        min-height: 0;
         display: grid;
         grid-template-columns: minmax(0, 0.92fr) minmax(280px, 0.78fr);
         gap: clamp(24px, 5vw, 66px);
         align-items: center;
+        border-radius: 12px;
         padding: clamp(22px, 4vw, 46px);
+      }
+      .story-panel:first-child {
+        min-height: 310px;
+      }
+      .control-card {
+        min-height: 310px;
+        border-radius: 12px;
       }
       .story-copy {
         display: grid;
         gap: 18px;
       }
       .story-copy h2 {
-        font-size: clamp(42px, 7vw, 96px);
-        line-height: 0.9;
+        font-size: clamp(31px, 3.8vw, 45px);
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: -0.01em;
       }
       .story-copy p {
         margin: 0;
         color: var(--muted);
         font-size: clamp(18px, 2.1vw, 25px);
-        line-height: 1.25;
+        line-height: 1.5;
       }
       .story-visual {
         width: 100%;
@@ -358,20 +488,85 @@ ${headFor(item)}
         transform: translateY(var(--lift, 0px));
         transition: transform 200ms ease, border-color 200ms ease;
       }
+      .control-list {
+        display: grid;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: var(--muted);
+      }
+      .control-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .control-list li::before {
+        content: "◇";
+        color: var(--gold);
+        font-size: 15px;
+      }
+      .terminal-panel {
+        padding: 0;
+      }
+      .terminal-panel pre {
+        margin: 0;
+        min-height: 190px;
+        padding: 16px 18px;
+        overflow: auto;
+        color: #d8d0be;
+        background: rgba(7, 7, 7, 0.62);
+        font-family: Menlo, Consolas, monospace;
+        font-size: clamp(10px, 1vw, 12px);
+        line-height: 1.75;
+        white-space: pre-wrap;
+      }
+      .terminal-panel span {
+        color: var(--fg);
+      }
       .roster-strip {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-        padding-top: 8px;
+        align-items: center;
+        gap: clamp(12px, 2.3vw, 28px);
+        padding: clamp(20px, 3vw, 34px);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--glass);
+        backdrop-filter: blur(22px) saturate(1.2);
+        -webkit-backdrop-filter: blur(22px) saturate(1.2);
+      }
+      .roster-strip::before {
+        content: "Agent Roster";
+        flex-basis: 100%;
+        color: var(--fg);
+        font-family: "Bodoni 72", "Didot", "Baskerville", Georgia, serif;
+        font-size: clamp(28px, 3vw, 40px);
+        text-transform: none;
       }
       .roster-strip span {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
         border: 1px solid var(--line);
-        padding: 9px 11px;
+        border-radius: 999px;
+        padding: 10px 13px;
         color: var(--muted);
         font-size: 10px;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.12em;
+      }
+      .roster-strip span::before {
+        content: "◇";
+        display: inline-grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--gold);
+        border-radius: 999px;
+        color: var(--gold);
+        font-size: 13px;
       }
       .facts, .feedback {
         padding: clamp(56px, 9vw, 120px) 0;
@@ -466,21 +661,16 @@ ${headFor(item)}
         .tower-sticky { transform: none !important; }
       }
       @media (max-width: 900px) {
-        .tower-wrap {
+        body::before {
+          background-size: auto 100svh;
+          background-position: 42% -34px;
           width: 100%;
-          opacity: 0.22;
-        }
-        .tower-sticky {
-          justify-items: start;
-          padding-left: 12px;
-        }
-        .tower-lines {
-          width: 140px;
+          opacity: calc(var(--bg-art-opacity) * 0.6);
         }
         .content {
           padding-left: var(--pad);
         }
-        .meta-glass, .story-panel, .fact-grid, .comment-form {
+        .hero, .case-meta, .story-panel, .fact-grid, .comment-form, .artifact-grid {
           grid-template-columns: 1fr;
         }
         .meta-row {
@@ -499,12 +689,33 @@ ${headFor(item)}
           display: grid;
         }
       }
+      @media (max-width: 620px) {
+        .topbar {
+          gap: 14px;
+          padding-inline: 18px;
+        }
+        .brand {
+          font-size: 28px !important;
+        }
+        .nav-links {
+          gap: 22px;
+        }
+        .nav-links a:nth-child(n+4), .theme-toggle {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="topbar" aria-label="Site header">
-      <a href="/">QS</a>
-      <a href="/#work">All Work</a>
+      <a class="brand" href="/" aria-label="QuanBuilds home">AO</a>
+      <nav class="nav-links" aria-label="Case study navigation">
+        <a href="/#work">Work</a>
+        <a href="/#story">About</a>
+        <a href="#proof">Notes</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Toggle theme"></button>
     </header>
     <div class="case-shell">
       <aside class="tower-wrap" aria-hidden="true">
@@ -512,31 +723,58 @@ ${headFor(item)}
       </aside>
       <main class="content">
         <section class="hero" id="top">
-          <div>
-            <p class="eyebrow">${esc(item.kicker)}</p>
+          <div class="case-intro">
+            <p class="eyebrow">Case Study</p>
             <h1>${esc(item.title)}</h1>
+            <div class="title-rule"><span>⌄</span></div>
+            <div class="case-meta" aria-label="Project metadata">
+              <div class="meta-row"><span class="meta-label">Role</span><strong>System Design</strong></div>
+              <div class="meta-row"><span class="meta-label">Type</span><strong>Multi-Agent Operating System</strong></div>
+              <div class="meta-row"><span class="meta-label">Team</span><strong>Botler + Agents</strong></div>
+              <div class="meta-row"><span class="meta-label">Status</span><strong>Live</strong></div>
+            </div>
             <p class="deck">${esc(item.deck)}</p>
           </div>
-          <div class="meta-glass" aria-label="Project facts">
-            <div class="meta-row"><span class="meta-label">Category</span><strong>${esc(item.category)}</strong></div>
-            <div class="meta-row"><span class="meta-label">Status</span><strong>${esc(item.status)}</strong></div>
-            <div class="meta-row"><span class="meta-label">Last Edited</span><strong>${esc(item.lastEdited)}</strong></div>
-            <div class="meta-row"><span class="meta-label">Business Model</span><strong>${esc(item.businessModel)}</strong></div>
+          <div class="story-panel control-card" id="section-1" data-section="${esc(sectionTitle(item.sections[0]))}">
+            <div class="story-copy">
+              <h2>${esc(sectionTitle(item.sections[0]))}</h2>
+              <p class="eyebrow">Botler</p>
+              <ul class="control-list">
+                <li>Plan</li>
+                <li>Execute</li>
+                <li>Verify</li>
+                <li>Memory</li>
+                <li>Approval</li>
+              </ul>
+            </div>
+            <figure class="story-visual terminal-panel" data-tilt>
+              <pre><span>● botler@control-plane</span>
+10:14:01  ▸ Plan created: Analyze inbound request
+10:14:03  ▸ Routed to: Dev, Hermes
+10:14:03  ▸ Dev: Code changes generated
+10:14:05  ▸ Hermes: Contract check passed
+10:14:06  ▸ Verification complete
+10:14:07  ▸ Awaiting human approval
+
+› _</pre>
+            </figure>
           </div>
         </section>
         <nav class="jumpbar" aria-label="Case study sections">
-          ${linksFor(item)}
+          <a href="#section-1">Control Plane</a>
+          <a href="#section-2">Agent Roster</a>
+          <a href="#section-3">Proof Trail</a>
+          <a href="#section-4">Notes</a>
         </nav>
-        <section class="artifact-grid" aria-label="AgenticOS source artifacts">
-          ${agenticosVisuals(item)}
-        </section>
-        <section class="story" aria-label="AgenticOS story">
-          ${agenticosSections(item)}
-          <aside class="roster-strip" aria-label="Agent roster">
+        <section class="story" aria-label="AgenticOS roster">
+          <aside class="roster-strip" id="section-2" data-section="Agent Roster" aria-label="Agent roster">
             ${["Botler","Cash","Dev","Jim","Hermes","Loki","Impulse","Red","Doc","Atlas","Scout"].map(name => `<span>${name}</span>`).join("")}
           </aside>
         </section>
-        <section class="facts" aria-label="Evidence and unknowns">
+        <section class="artifact-grid" id="section-3" data-section="Proof Trail" aria-label="AgenticOS source artifacts">
+          ${agenticosVisuals(item)}
+        </section>
+        <section class="facts" id="section-4" data-section="Notes" aria-label="Evidence and unknowns">
           <div class="fact-grid">
             <article class="fact-card"><p class="meta-label">Goal</p><h3>What we aimed for</h3><p>${esc(item.goal)}</p></article>
             <article class="fact-card"><p class="meta-label">Approach</p><h3>How we tried</h3><p>${esc(item.approach)}</p></article>
@@ -570,7 +808,13 @@ ${headFor(item)}
       const caseData = ${data};
       const formatter = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric", year: "numeric" });
       const root = document.documentElement;
-      const tower = document.querySelector(".tower-sticky");
+      const savedTheme = localStorage.getItem("portfolio-theme");
+      root.dataset.theme = savedTheme || "dark";
+      document.querySelector(".theme-toggle").addEventListener("click", () => {
+        const next = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        localStorage.setItem("portfolio-theme", next);
+      });
 
       function payload(extra = {}) {
         return {
@@ -663,7 +907,7 @@ ${headFor(item)}
           }
         });
       }, { rootMargin: "-35% 0px -45% 0px", threshold: 0.01 });
-      document.querySelectorAll(".story-panel").forEach((panel) => observer.observe(panel));
+      document.querySelectorAll(".story-panel, .roster-strip, .artifact-grid, .facts").forEach((panel) => observer.observe(panel));
       const depthMarks = [25, 50, 75, 95];
       const sentDepth = new Set();
       function onScroll() {
